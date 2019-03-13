@@ -47,28 +47,34 @@
     },
     methods: {
       reg () {
-        this.$http.post('/usuario/registro', { nombre: this.name, 
+        if (this.password === this.passwordRep) {
+          this.$http.post('/usuario/registro', { nombre: this.name, 
                                   nombreReal: this.user,
                                   email: this.email,
                                   pass: this.password
                                   })
-        .then(response => {
-          if (response.status === 200) {
-            // te paso los parametros para que inicialices la session (vue-session por ejemplo)
-            // acceder a los datos como 
-            //  response.data['nombre']
-            //  response.data['nombreReal']
-            //  response.data['email']
-            // yo uso eso, me imagino que funcionara con tu router
-            
-            this.$router.push('/')
-          } else {
-             //  acceder al error ->
-             //  response.data['error']
-            this.error = response.data['error']
-          }
-        })
-        .catch(() => this.regFailed())
+          .then(response => {
+            if (response.status === 200) {
+              // te paso los parametros para que inicialices la session (vue-session por ejemplo)
+              // acceder a los datos como 
+              //  response.data['nombre']
+              //  response.data['nombreReal']
+              //  response.data['email']
+              // yo uso eso, me imagino que funcionara con tu router
+              
+              this.$router.push('/')
+            } else {
+              //  acceder al error ->
+              //  response.data['error']
+              this.error = response.data['error']
+            }
+          })
+          .catch(() => this.regFailed())
+        }
+        else{
+          this.error = 'Las contraseñas no coinciden!'
+        }
+        
       },
       regSuccessful (req) {
         this.$router.replace(this.$route.query.redirect || '/')

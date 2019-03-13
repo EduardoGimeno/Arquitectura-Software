@@ -62,17 +62,6 @@
         })
         .catch(() => this.loginFailed())
       },
-      loginSuccessful (req) {
-        if (!req.data.token) {
-          this.loginFailed()
-          return
-        }
-
-        localStorage.token = req.data.token
-        this.error = false
-
-        this.$router.replace(this.$route.query.redirect || '/TimeLine')
-      },
       loginFailed () {
         this.error = 'Login failed!'
         delete localStorage.token
