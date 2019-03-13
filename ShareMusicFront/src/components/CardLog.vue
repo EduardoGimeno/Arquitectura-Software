@@ -52,11 +52,15 @@
             //  response.data['nombre']
             //  response.data['nombreReal']
             //  response.data['email']
-            // yo uso eso, me imagino que funcionara con tu router
+            // yo uso eso, me imagino que funcionara  con tu router
+            this.$session.start()
+            this.$session.set('name', response.data['nombre'])
+            this.$session.set('realname', response.data['nombreReal'])
+            this.$session.set('email', response.data['email'])
+
             this.$router.replace(this.$route.query.redirect || '/TimeLine')
+            //this.$router.push('/panel/search')
           } else {
-             //  acceder al error ->
-             //  response.data['error']
             this.error = response.data['error']
           }
         })

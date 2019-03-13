@@ -5,6 +5,7 @@ import 'mdbvue/build/css/mdb.css';
 import Vue from 'vue';
 import App from './App';
 import router from './router';
+import vueSession from './session';
 import axios from './backend/vue-axios';
 
 Vue.config.productionTip = false;
@@ -14,7 +15,7 @@ new Vue({
   el: '#app',
   router,
   axios,
+  vueSession,
   components: { App },
   template: '<App/>'
 });
-

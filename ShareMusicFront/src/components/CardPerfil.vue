@@ -32,7 +32,7 @@
   export default {
     name: 'CardPerfil',
     name: 'Perfil',
-    props:['imagen','nombre','user','biografia','seguidores','seguidos','bloqueados'],
+    props:['imagen','user','biografia','seguidores','seguidos','bloqueados'],
     components: {
       mdbCard,
       mdbCardImage,
@@ -44,6 +44,7 @@
     },
     data() {
     return {
+      nombre: this.$session.get('realname'),
       modal: false,
       publico: false,
       seguido: false

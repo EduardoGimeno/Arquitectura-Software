@@ -152,6 +152,19 @@ export default {
       return post.id % 2 !== 0
     })
   },
+
+  beforeCreate: function () {
+    if (!this.$session.exists()) {
+      this.$router.push('/')
+    }
+  },
+  methods: {
+    logout: function () {
+      this.$session.destroy()
+      this.$router.push('/')
+    }
+  }
+  
 };
 </script>
 
