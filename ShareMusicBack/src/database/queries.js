@@ -72,10 +72,39 @@ const usuario_registro = function (data,res) {
     })
 };
 
-
+const numSeguidos = function (data,res) {
+    let sql = 'select count(*) as seguidos from seguidos where NomUsuario= ?'
+    conection.query(sql, data, function (err, result) {
+      if (err) throw err
+      else {
+        res.status(200).send({ totalSeguidos: result[0]['seguidos'] })
+      }
+    })
+};
+const numSeguidores = function (data,res) {
+    let sql = 'select count(*) as seguidores from seguidores where NomUsuario= ?'
+    conection.query(sql, data, function (err, result) {
+      if (err) throw err
+      else {
+        res.status(200).send({ totalSeguidores: result[0]['seguidores']})
+      }
+    })
+};
+const numBloqueados = function (data,res) {
+    let sql = 'select count(*) as bloqueados from bloqueados where NomUsuario= ?'
+    conection.query(sql, data, function (err, result) {
+      if (err) throw err
+      else {
+        res.status(200).send({ totalBloqueados: result[0]['bloqueados']})
+      }
+    })
+};
 
 
 module.exports = {
     usuario_registro: usuario_registro,
-    usuario_login: usuario_login
+    usuario_login: usuario_login,
+    numSeguidos:numSeguidos,
+    numSeguidores:numSeguidores,
+    numBloqueados:numBloqueados
 };
