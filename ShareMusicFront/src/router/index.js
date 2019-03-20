@@ -4,6 +4,7 @@ import Login from '@/pages/Login';
 import Sign from '@/pages/Sign';
 import TimeLine from '@/pages/TimeLine';
 import Perfil from '@/pages/Perfil';
+import EdicionPerfil from '@/pages/EdicionPerfil';
 import ListaUsuarios from '@/pages/ListaUsuarios';
 import Chat from '@/pages/Chat';
 
@@ -30,6 +31,12 @@ export default new Router({
       path: '/Perfil',
       name: 'Perfil',
       component: Perfil
+    },
+
+    {
+      path: '/EdicionPerfil',
+      name: 'EdicionPerfil',
+      component: EdicionPerfil
     },
     {
       path: '/ListaUsuarios',

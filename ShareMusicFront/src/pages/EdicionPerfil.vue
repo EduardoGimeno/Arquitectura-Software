@@ -1,53 +1,18 @@
 <template>
-<div>
+    <div>
       <NavBarUsuario/>
       <div class="center">
-        <mdb-row class="col"> 
-          <mdb-col md="5">
-            <div class="publish">
-            <CardPost/>
-            </div>
-
-          </mdb-col>
-    
-         <mdb-col md="3 ">
-            <ul classs= "" style="list-style-type:none;">
-              <li
-                is="CardContent"
-                v-for="post in posts"
-                v-if="post.id% 2 !== 0"
-                v-bind:key="post.id"
-                v-bind:imagen="post.imagen"
-                v-bind:user="post.user"
-                v-bind:title="post.title"
-                v-bind:description="post.description"
-                v-bind:likes="post.likes"
-                v-bind:dislikes="post.dislikes"
-                v-bind:comments="post.comments"
-              ></li>
-            </ul>
-          </mdb-col>
-
-
-          <mdb-col md="3 ">
-            <ul style="list-style-type:none;">
-              <li
-                is="CardContent"
-                v-for="(post) in posts"
-                v-if="post.id% 2 === 0"
-                v-bind:key="post.id"
-                v-bind:imagen="post.imagen"
-                v-bind:user="post.user"
-                v-bind:title="post.title"
-                v-bind:description="post.description"
-                v-bind:likes="post.likes"
-                v-bind:dislikes="post.dislikes"
-                v-bind:comments="post.comments"
-              ></li>
-
-            </ul>
+        <mdb-container >
+        <mdb-row>
+          <mdb-col>
+               <CardEdicionPerfil/>
           </mdb-col>
         </mdb-row>
+         
+      </mdb-container>
+
+
+
       </div>
 </div>
 </template>
@@ -55,14 +20,15 @@
 <script>
 import { mdbContainer, mdbRow, mdbCol, ViewWrapper, mdbMask, mdbBtn, mdbIcon, mdbNavbar, mdbNavItem, mdbNavbarNav, mdbNavbarToggler, mdbNavbarBrand  } from 'mdbvue';
 import {  mdbCard, mdbCardImage, mdbCardHeader, mdbCardBody, mdbCardTitle, mdbCardText, mdbCardFooter, mdbCardUp, mdbCardAvatar, mdbCardGroup, mdbView } from 'mdbvue';
-import CardPost from "@/components/CardPost";
+import CardEdicionPerfil from "@/components/CardEdicionPerfil";
 import CardContent from "@/components/CardContent";
 import NavBarUsuario from "@/components/NavBarUsuario";
+
 export default {
-  name: 'Timeline',
+  name: 'Perfil',
   components: {
+    CardEdicionPerfil,
     NavBarUsuario,
-    CardPost,
     CardContent,
     mdbContainer,
     mdbRow,
@@ -90,6 +56,13 @@ export default {
   },
   data() {
     return {
+      imagen:'https://image.flaticon.com/icons/svg/149/149071.svg',
+      nombre: 'Nombre Apellidos',
+      user: '@User',
+      biografia:'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      seguidores:609,
+      seguidos:100,
+      bloqueados:50,
       posts:[
         {
           id:1,
@@ -134,6 +107,7 @@ export default {
       return post.id % 2 !== 0
     })
   },
+
   beforeCreate: function () {
     if (!this.$session.exists()) {
       this.$router.push('/')
@@ -145,6 +119,7 @@ export default {
       this.$router.push('/')
     }
   }
+  
 };
 </script>
 
@@ -163,13 +138,13 @@ position: relative;
 background-color: #ede7f6;
 }
 
-.publish{
-  position: fixed;
+.perfil{
+  position: relative;
   top:15%;
  right: 0;
   bottom: 1;
-  left: 13%;
-  width: 22%;
+  left: 10%;
+  width: 50%;
   height: 50%;
 
 }
@@ -185,12 +160,12 @@ background-color: #ede7f6;
 .center {
   position: absolute;
   margin: auto;
-  width: 100%;
+  width: 70%;
   top:12%;
+  left: 15%;
   padding: 10px;
   
 }
 
 
 </style>
-
