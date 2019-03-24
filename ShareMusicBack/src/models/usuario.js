@@ -19,13 +19,33 @@ const registro = function (req,res) {
    bd.usuario_registro(data, res);
 }
 const seguir = function (req,res) {
-    console.log('seguir');
+    let data = [
+        req.body.nombre,
+        req.body.nombreSeguir
+    ];
+    bd.usuario_seguir(data, res);
 }
 const noseguir = function (req,res) {
-    console.log('noseguir');
+    let data = [
+        req.body.nombre,
+        req.body.nombreSeguir
+    ];
+    console.log(data)
+    bd.usuario_dejarseguir(data, res);
 }
 const bloquear = function (req,res) {
-    console.log('bloquear');
+    let data = [
+        req.body.nombre,
+        req.body.nombreBloquear
+    ];
+    bd.usuario_bloquear(data, res);
+}
+const desbloquear = function (req,res) {
+    let data = [
+        req.body.nombre,
+        req.body.nombreBloquear
+    ];
+    bd.usuario_desbloquear(data, res);
 }
 const perfil = function (req,res) {
     console.log('perfil');
@@ -58,4 +78,6 @@ module.exports = {
     numSeguidos:numSeguidos,
     numSeguidores:numSeguidores,
     numBloquados:numBloqueados,
+    desbloquear:desbloquear,
+    bloquear:bloquear
 }
