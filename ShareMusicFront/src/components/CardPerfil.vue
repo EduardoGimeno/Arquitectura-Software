@@ -50,17 +50,44 @@
     },
     data() {
     return {
-      user: this.$session.get('realname'),
+      user: this.$session.get('name'),
       imagen: 'https://image.flaticon.com/icons/svg/149/149071.svg',
-      nombre:  this.$session.get('name'),
+      nombre:  this.$session.get('realname') ,
       biografia:'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      seguidores:'609',
-      seguidos:'100',
-      bloqueados:'50',
+      seguidores:'',
+      seguidos:'',
+      bloqueados:'',
       modal: false,
       publico: false,
       seguido: false
     }
   },
+  beforeCreate: function () {
+    this.$http.post('/usuario/numSeguidores', { nombre: this.user})
+        .then(response => {
+          if (response.status === 200) {
+            this.seguidores= response.data['totalSeguidores']
+          }
+        })
+        .catch(() => this.failed())
+    this.$http.post('/usuario/numSeguidos', { nombre: this.user})
+        .then(response => {
+          if (response.status === 200) {
+            this.seguidos= response.data['totalSeguidos']
+          }
+        })
+        .catch(() => this.failed())
+    this.$http.post('/usuario/numBloqueados', { nombre: this.user})
+        .then(response => {
+          if (response.status === 200) {
+            this.bloqueados= response.data['totalBloqueados']
+          }
+        })
+        .catch(() => this.failed())
+
+  },
+  failed () {
+      }
+
   };
 </script>

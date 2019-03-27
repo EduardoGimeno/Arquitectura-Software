@@ -48,8 +48,8 @@
     methods: {
       reg () {
         if (this.password === this.passwordRep) {
-          this.$http.post('/usuario/registro', { nombre: this.name, 
-                                  nombreReal: this.user,
+          this.$http.post('/usuario/registro', { nombre: this.user, 
+                                  nombreReal: this.name,
                                   email: this.email,
                                   pass: this.password
                                   })
