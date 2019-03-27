@@ -153,15 +153,15 @@ const usuario_esSeguidor = function (data,res) {
         conection.query(sql, data, function (err, result) {
           if (err) throw err
           if (result[0] === undefined) {
-            res.status(200).send({seguido:false, bloqueado:false})
+            res.status(200).send({seguido:0, bloqueado:0})
           }
           else {
-            res.status(200).send({seguido:false, bloqueado:true})
+            res.status(200).send({seguido:0, bloqueado:1})
           }
         })
     }
     else {
-      res.status(200).send({seguido:true, bloqueado:false})
+      res.status(200).send({seguido:1, bloqueado:1})
     }
   })
 };

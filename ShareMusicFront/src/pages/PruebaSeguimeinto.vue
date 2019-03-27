@@ -63,7 +63,7 @@ import CardContent from "@/components/CardContent";
 import NavBarUsuario from "@/components/NavBarUsuario";
 
 export default {
-  name: 'Perfil',
+  name: 'PruebaSeguimeinto',
   components: {
     NavBarUsuario,
     CardPerfilPruebSeg,
@@ -144,12 +144,6 @@ export default {
     return posts.filter(function (post) {
       return post.id % 2 !== 0
     })
-  },
-
-  beforeCreate: function () {
-    if (!this.$session.exists()) {
-      this.$router.push('/')
-    }
   },
   methods: {
     logout: function () {

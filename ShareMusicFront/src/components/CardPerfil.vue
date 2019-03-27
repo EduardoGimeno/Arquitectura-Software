@@ -61,7 +61,8 @@
       seguido: false
     }
   },
-  beforeCreate: function () {
+  created: function () {
+    //Se pide el número de seguidores
     this.$http.post('/usuario/numSeguidores', { nombre: this.user})
         .then(response => {
           if (response.status === 200) {
@@ -69,6 +70,7 @@
           }
         })
         .catch(() => this.failed())
+    //Se pide el número de seguidos
     this.$http.post('/usuario/numSeguidos', { nombre: this.user})
         .then(response => {
           if (response.status === 200) {
@@ -76,6 +78,7 @@
           }
         })
         .catch(() => this.failed())
+    //Se pide el número de bloqueados
     this.$http.post('/usuario/numBloqueados', { nombre: this.user})
         .then(response => {
           if (response.status === 200) {

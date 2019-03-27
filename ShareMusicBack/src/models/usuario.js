@@ -30,7 +30,6 @@ const noseguir = function (req,res) {
         req.body.nombre,
         req.body.nombreSeguir
     ];
-    console.log(data)
     bd.usuario_dejarseguir(data, res);
 }
 const bloquear = function (req,res) {
