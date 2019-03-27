@@ -125,7 +125,13 @@ const usuario_bloquear = function (data,res) {
     conection.query(sql, [data], function (err, result) {
       if (err) throw err
       else {
-        res.status(200).send()
+        let sql = 'DELETE FROM seguidos WHERE NomUsuario=? AND UsuarioSeguido=?'
+        conection.query(sql, data, function (err, result) {
+          if (err) throw err
+          else {
+            res.status(200).send()
+          }
+        })
       }
     })
 };
@@ -138,6 +144,27 @@ const usuario_desbloquear = function (data,res) {
       }
     })
 };
+const usuario_esSeguidor = function (data,res) {
+  let sql = 'SELECT * FROM seguidos WHERE NomUsuario=? AND UsuarioSeguido=?'
+  conection.query(sql, data, function (err, result) {
+    if (err) throw err
+    if (result[0] === undefined) {
+      let sql = 'SELECT * FROM bloqueados WHERE NomUsuario=? AND UsuarioBloqueado=?'
+        conection.query(sql, data, function (err, result) {
+          if (err) throw err
+          if (result[0] === undefined) {
+            res.status(200).send({seguido:false, bloqueado:false})
+          }
+          else {
+            res.status(200).send({seguido:false, bloqueado:true})
+          }
+        })
+    }
+    else {
+      res.status(200).send({seguido:true, bloqueado:false})
+    }
+  })
+};
 
 module.exports = {
     usuario_registro: usuario_registro,
@@ -148,5 +175,6 @@ module.exports = {
     usuario_seguir:usuario_seguir,
     usuario_dejarseguir:usuario_dejarseguir,
     usuario_bloquear:usuario_bloquear,
-    usuario_desbloquear:usuario_desbloquear
+    usuario_desbloquear:usuario_desbloquear,
+    usuario_esSeguidor:usuario_esSeguidor
 };

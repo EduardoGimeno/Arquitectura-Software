@@ -68,6 +68,14 @@ const numBloqueados = function (req,res) {
     ];
     bd.numBloqueados(data,res)
 }
+const esSeguidor = function (req,res) {
+    let data = [
+        req.body.usuario,
+        req.body.usuarioSeguido
+    ];
+    bd.usuario_esSeguidor(data,res)
+}
+
 module.exports = {
     login: login,
     registro:registro,
@@ -79,5 +87,6 @@ module.exports = {
     numSeguidores:numSeguidores,
     numBloquados:numBloqueados,
     desbloquear:desbloquear,
-    bloquear:bloquear
+    bloquear:bloquear,
+    esSeguidor:esSeguidor
 }

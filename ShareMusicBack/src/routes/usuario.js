@@ -8,6 +8,7 @@ router.post('/seguir',usuario.seguir);
 router.post('/noseguir',usuario.noseguir);
 router.post('/bloquear',usuario.bloquear);
 router.post('/desbloquear',usuario.desbloquear);
+router.post('/esSeguidor',usuario.esSeguidor);
 router.get('/perfil/:id', usuario.perfil);
 router.post('/numBloqueados',usuario.numBloquados);
 router.post('/numSeguidores',usuario.numSeguidores);
