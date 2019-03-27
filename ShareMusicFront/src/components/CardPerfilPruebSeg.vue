@@ -9,8 +9,10 @@
       <p class="h4 text-center mt-4 mb-3">{{nombre}}</p>
 
       <div v-if="publico" class="text-center  mb-5">
-        <mdb-btn v-if="seguido" outline="secondary">Dejar de seguir</mdb-btn>
-        <mdb-btn v-else  outline="secondary">Seguir</mdb-btn>
+        <form  @submit.prevent="seguir">
+          <mdb-btn v-if="seguido" outline="secondary" type="submit">Dejar de seguir</mdb-btn>
+          <mdb-btn v-else  outline="secondary" type="submit">Seguir</mdb-btn>
+        </form>
         </div>
         <div v-else class="text-center mb-5">
           <router-link to="EdicionPerfil">
@@ -24,8 +26,6 @@
         <router-link to="ListaUsuarios"><p class="h7 mt-4">{{seguidores}} <a>seguidores</a> </p></router-link>
         <router-link to="ListaUsuarios"><p class="h7">{{seguidos}} <a>seguidos</a></p></router-link>
         <router-link to="ListaUsuarios"><p class="h7">{{bloqueados}} <a>bloqueados</a></p></router-link>
-
-
         </div>
     </form>
   </mdb-card-body>
@@ -37,7 +37,7 @@
   import { mdbCard, mdbCardImage, mdbCardBody, mdbCardTitle, mdbCardText, mdbBtn, mdbInput  } from 'mdbvue';
 
   export default {
-    name: 'CardPerfil',
+    name: 'CardPerfilPruebSeg',
     name: 'Perfil',
     components: {
       mdbCard,
@@ -50,44 +50,59 @@
     },
     data() {
     return {
-      user: this.$session.get('name'),
+      user: 'juanPrueba',
       imagen: 'https://image.flaticon.com/icons/svg/149/149071.svg',
-      nombre:  this.$session.get('realname') ,
+      nombre:  'Juan Prueba' ,
       biografia:'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      seguidores:'',
-      seguidos:'',
-      bloqueados:'',
-      publico: false,
+      seguidores:'prueba',
+      seguidos:'prueba',
+      bloqueados:'prueba',
+      publico: true,
       seguido: false
     }
   },
   beforeCreate: function () {
-    this.$http.post('/usuario/numSeguidores', { nombre: this.user})
+    this.$http.post('/usuario/seguidos', { nombre: this.$session.get('name'), nombreSeguir: this.user})
         .then(response => {
           if (response.status === 200) {
-            this.seguidores= response.data['totalSeguidores']
-          }
-        })
-        .catch(() => this.failed())
-    this.$http.post('/usuario/numSeguidos', { nombre: this.user})
-        .then(response => {
-          if (response.status === 200) {
-            this.seguidos= response.data['totalSeguidos']
-          }
-        })
-        .catch(() => this.failed())
-    this.$http.post('/usuario/numBloqueados', { nombre: this.user})
-        .then(response => {
-          if (response.status === 200) {
-            this.bloqueados= response.data['totalBloqueados']
+            if(response.data['seguidos']===true){
+              this.seguido=true;
+            }
+            else{
+              this.seguido=false;
+            }
           }
         })
         .catch(() => this.failed())
 
   },
   methods: {
-    failed () {
+      seguir () {
+        if(this.seguido){
+          this.$http.post('/usuario/seguir', { nombre: this.$session.get('name'), nombreSeguir: this.user })
+          .then(response => {
+            if (response.status === 200) {
+              this.seguido=true;
+            }
+          })
+          .catch(() => this.loginFailed())
         }
+        else{
+          his.$http.post('/usuario/noseguir', { nombre: this.$session.get('name'), nombreSeguir: this.user })
+          .then(response => {
+            if (response.status === 200) {
+              this.seguido=false;       
+            }
+          })
+          .catch(() => this.loginFailed())
+        }
+        
+      },
+      loginFailed () {
+        this.error = 'Login failed!'
+        delete localStorage.token
+      }
     }
-  }
+
+  };
 </script>

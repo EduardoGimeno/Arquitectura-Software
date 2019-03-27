@@ -7,6 +7,7 @@ import Perfil from '@/pages/Perfil';
 import EdicionPerfil from '@/pages/EdicionPerfil';
 import ListaUsuarios from '@/pages/ListaUsuarios';
 import Chat from '@/pages/Chat';
+import PruebaSeguimeinto from '@/pages/PruebaSeguimeinto';
 
 Vue.use(Router);
 
@@ -47,6 +48,11 @@ export default new Router({
       path: '/Chat',
       name: 'Chat',
       component: Chat
+    },
+    {
+      path: '/PruebaSeguimeinto',
+      name: 'PruebaSeguimeinto',
+      component: PruebaSeguimeinto
     }
   ]
 });

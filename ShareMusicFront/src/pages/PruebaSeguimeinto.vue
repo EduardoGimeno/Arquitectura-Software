@@ -6,7 +6,7 @@
         <mdb-row class="col"> 
           <mdb-col md="5">
             <div class="perfil">
-            <CardPerfil/>
+            <CardPerfilPruebSeg/>
             </div>
           </mdb-col>
     
@@ -58,7 +58,7 @@
 <script>
 import { mdbContainer, mdbRow, mdbCol, ViewWrapper, mdbMask, mdbBtn, mdbIcon, mdbNavbar, mdbNavItem, mdbNavbarNav, mdbNavbarToggler, mdbNavbarBrand  } from 'mdbvue';
 import {  mdbCard, mdbCardImage, mdbCardHeader, mdbCardBody, mdbCardTitle, mdbCardText, mdbCardFooter, mdbCardUp, mdbCardAvatar, mdbCardGroup, mdbView } from 'mdbvue';
-import CardPerfil from "@/components/CardPerfil";
+import CardPerfilPruebSeg from "@/components/CardPerfilPruebSeg";
 import CardContent from "@/components/CardContent";
 import NavBarUsuario from "@/components/NavBarUsuario";
 
@@ -66,7 +66,7 @@ export default {
   name: 'Perfil',
   components: {
     NavBarUsuario,
-    CardPerfil,
+    CardPerfilPruebSeg,
     CardContent,
     mdbContainer,
     mdbRow,
