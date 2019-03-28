@@ -82,7 +82,7 @@ const numSeguidos = function (data,res) {
     })
 };
 const numSeguidores = function (data,res) {
-    let sql = 'select count(*) as seguidores from seguidores where NomUsuario= ?'
+    let sql = 'select count(*) as seguidores from seguidos where UsuarioSeguido= ?'
     conection.query(sql, data, function (err, result) {
       if (err) throw err
       else {
@@ -161,7 +161,7 @@ const usuario_esSeguidor = function (data,res) {
         })
     }
     else {
-      res.status(200).send({seguido:1, bloqueado:1})
+      res.status(200).send({seguido:1, bloqueado:0})
     }
   })
 };
