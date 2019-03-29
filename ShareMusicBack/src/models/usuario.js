@@ -74,7 +74,37 @@ const esSeguidor = function (req,res) {
     ];
     bd.usuario_esSeguidor(data,res)
 }
-
+const listBloqueados = function (req,res) {
+    let data = [
+        req.body.nombre
+    ];
+    bd.usuario_listBloqueados(data,res)
+}
+const listSeguidores = function (req,res) {
+    let data = [
+        req.body.nombre
+    ];
+    bd.usuario_listSeguidores(data,res)
+}
+const listSeguidos = function (req,res) {
+    let data = [
+        req.body.nombre
+    ];
+    bd.usuario_listSeguidos(data,res)
+}
+const editarperfil = function (req,res) {
+    let data = [
+        req.body.biografia,
+        req.body.nombre
+    ];
+    bd.usuario_editarperfil(data,res)
+}
+const biografia = function (req,res) {
+    let data = [
+        req.body.nombre
+    ];
+    bd.usuario_biografia(data,res)
+}
 module.exports = {
     login: login,
     registro:registro,
@@ -84,8 +114,13 @@ module.exports = {
     perfil:perfil,
     numSeguidos:numSeguidos,
     numSeguidores:numSeguidores,
-    numBloquados:numBloqueados,
+    numBloqueados:numBloqueados,
     desbloquear:desbloquear,
     bloquear:bloquear,
-    esSeguidor:esSeguidor
+    esSeguidor:esSeguidor,
+    listBloqueados:listBloqueados,
+    listSeguidores:listSeguidores,
+    listSeguidos:listSeguidos,
+    editarperfil:editarperfil,
+    biografia:biografia
 }

@@ -166,6 +166,51 @@ const usuario_esSeguidor = function (data,res) {
   })
 };
 
+const usuario_listBloqueados = function (data,res) {
+  let sql = 'select UsuarioBloqueado from bloqueados where NomUsuario= ?'
+  conection.query(sql, data, function (err, result) {
+    if (err) throw err
+    else {
+      res.status(200).send(result)
+    }
+  })
+};
+const usuario_listSeguidores = function (data,res) {
+  let sql = 'select NomUsuario from seguidos where UsuarioSeguido= ?'
+  conection.query(sql, data, function (err, result) {
+    if (err) throw err
+    else {
+      res.status(200).send(result)
+    }
+  })
+};
+const usuario_listSeguidos = function (data,res) {
+  let sql = 'select UsuarioSeguido from seguidos where NomUsuario= ?'
+  conection.query(sql, data, function (err, result) {
+    if (err) throw err
+    else {
+      res.status(200).send(result)
+    }
+  })
+};
+const usuario_editarperfil = function (data,res) {
+  let sql = 'update usuario SET Biografia=? WHERE Nombre=?'
+  conection.query(sql, data, function (err, result) {
+    if (err) throw err
+    else {
+      res.status(200).send()
+    }
+  })
+};
+const usuario_biografia = function (data,res) {
+  let sql = 'SELECT Biografia FROM usuario WHERE Nombre=?'
+  conection.query(sql, data, function (err, result) {
+    if (err) throw err
+    else {
+      res.status(200).send(result)
+    }
+  })
+};
 module.exports = {
     usuario_registro: usuario_registro,
     usuario_login: usuario_login,
@@ -176,5 +221,10 @@ module.exports = {
     usuario_dejarseguir:usuario_dejarseguir,
     usuario_bloquear:usuario_bloquear,
     usuario_desbloquear:usuario_desbloquear,
-    usuario_esSeguidor:usuario_esSeguidor
+    usuario_esSeguidor:usuario_esSeguidor,
+    usuario_listBloqueados:usuario_listBloqueados,
+    usuario_listSeguidores:usuario_listSeguidores,
+    usuario_listSeguidos:usuario_listSeguidos,
+    usuario_editarperfil:usuario_editarperfil,
+    usuario_biografia:usuario_biografia
 };
