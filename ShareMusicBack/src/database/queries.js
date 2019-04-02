@@ -207,7 +207,7 @@ const usuario_biografia = function (data,res) {
   conection.query(sql, data, function (err, result) {
     if (err) throw err
     else {
-      res.status(200).send(result)
+      res.status(200).send({ biografia: result[0].Biografia})
     }
   })
 };

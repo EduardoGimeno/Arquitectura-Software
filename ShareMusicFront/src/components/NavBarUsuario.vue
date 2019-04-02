@@ -9,7 +9,7 @@
            <router-link to="TimeLine">
              <mdb-nav-item href="#" waves-fixed>Inicio</mdb-nav-item>
            </router-link>
-          <router-link to="Perfil">
+           <router-link :to="{ name: 'Perfil', params: { username: 'javierprueba'}}">
           <mdb-nav-item href="#" waves-fixed>Perfil</mdb-nav-item>
         </router-link>
         <router-link to="Chat">
@@ -45,7 +45,12 @@ export default {
     mdbNavbarNav,
     mdbNavbarToggler,
     mdbNavbarBrand
-  }
+  },
+  data() {
+    return {
+      user: this.$session.get('name'),
+    }
+    },
 };
 </script>
 

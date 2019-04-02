@@ -29,7 +29,7 @@ export default new Router({
       component: TimeLine
     },
     {
-      path: '/Perfil',
+      path: '/Perfil/:username',
       name: 'Perfil',
       component: Perfil
     },
@@ -40,7 +40,7 @@ export default new Router({
       component: EdicionPerfil
     },
     {
-      path: '/ListaUsuarios',
+      path: '/ListaUsuarios/:username/type/:type_list',
       name: 'ListaUsuarios',
       component: ListaUsuarios
     },

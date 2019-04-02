@@ -2,6 +2,13 @@
   <mdb-card>
     <mdb-card-body>
       <form>
+        <form @submit.prevent="block">
+        <div class="text-right">
+          <mdb-btn outline="secondary" type="submit">Bloquear</mdb-btn>
+          <a class="icons-sm li-ic" onclick="form.submit();"><mdb-icon icon="ban" /> </a>
+        </div>
+        </form>
+
         <div class="text-center">
           <img
             v-bind:src="imagen"
@@ -61,7 +68,8 @@ import {
   mdbCardTitle,
   mdbCardText,
   mdbBtn,
-  mdbInput
+  mdbInput,
+  mdbIcon
 } from "mdbvue";
 
 export default {
@@ -73,7 +81,8 @@ export default {
     mdbCardTitle,
     mdbCardText,
     mdbBtn,
-    mdbInput
+    mdbInput,
+    mdbIcon
   },
   data() {
     return {
@@ -85,10 +94,24 @@ export default {
       seguidos: "prueba",
       bloqueados: "prueba",
       publico: true,
-      seguido: false //false muestra el botón 'Seguir', true muestra el botón 'Dejar de seguir'
+      seguido: false, //false muestra el botón 'Seguir', true muestra el botón 'Dejar de seguir'
+      bloqueado: false 
     };
   },
   created: function() {
+    /*
+    this.$http
+      .post('/usuario/esBloqueado', { usuario: 'javierprueba', usuarioBloqueado: this.user})
+      .then(response => {
+        if (response.status === 200) {
+          if (response.data["bloqueado"] === 1) {
+            this.bloqueado = true;
+          } else {
+            this.bloqueado = false;
+          }
+        }
+      })
+      */
     //Se comprueba si javierprueba sigue a juanprueba
     this.$http
       .post('/usuario/esSeguidor', { usuario: 'javierprueba', usuarioSeguido: this.user})
@@ -151,6 +174,33 @@ export default {
           .post("/usuario/noseguir", {
             nombre: "javierprueba",
             nombreSeguir: this.user
+          })
+          .then(response => {
+            if (response.status === 200) {
+              this.seguido = false;
+            }
+          })
+          .catch(() => this.loginFailed());
+      }
+    },
+    block() {
+      if (this.bloqueado === false) {
+        this.$http
+          .post("/usuario/bloquear", {
+            nombre: "javierprueba",
+            nombreBloquear: this.user
+          })
+          .then(response => {
+            if (response.status === 200) {
+              this.bloqueado = true;
+            }
+          })
+          .catch(() => this.loginFailed());
+      } else {
+        this.$http
+          .post("/usuario/desbloquear", {
+            nombre: "javierprueba",
+            nombreBloquear: this.user
           })
           .then(response => {
             if (response.status === 200) {

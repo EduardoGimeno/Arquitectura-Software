@@ -68,6 +68,15 @@ export default {
     if (!this.$session.exists()) {
       this.$router.push('/')
     }
+    else{
+      this.$http.post('/usuario/listSeguidores', { nombre: $route.params.username})
+        .then(response => {
+          if (response.status === 200) {
+            this.seguidores= response.data['totalSeguidores']
+          }
+        })
+        .catch(() => this.failed())
+    }
   },
   methods: {
     logout: function () {

@@ -1,7 +1,7 @@
 <template>
   <mdb-card>
     <mdb-card-body>
-      <form @submit.prevent="reg">
+      <form @submit.prevent="editar">
         <p class="h2 text-center py-4">Edición de Perfil</p>
 
         <div class="grey-text">
@@ -17,7 +17,7 @@
                 >
               </div>
               <div class="text-center py-4">
-                <mdb-btn outline="secondary" type="submit">Editar foto</mdb-btn>
+                <mdb-btn outline="secondary">Editar foto</mdb-btn>
               </div>
             </mdb-col>
 
@@ -28,7 +28,7 @@
               <div class="mt-5">
                 <mdb-input v-model="email" label="Email" type="email"/>
               </div>
-              <mdb-textarea label="Biografía" @input="handleInput" :rows="3"/>
+              <mdb-textarea v-model="biografia" label="Biografía" @input="handleInput" :rows="3"/>
             </mdb-col>
           </mdb-row>
 
@@ -95,8 +95,37 @@ export default {
     return {
       email: this.$session.get("email"),
       imagen: "https://image.flaticon.com/icons/svg/149/149071.svg",
-      name: this.$session.get("name")
+      name: this.$session.get("realname"),
+      user: this.$session.get("name"),
+      biografia: ''
     };
+  },
+
+  created: function () {
+    //cambiar por petición de todo el perfil
+    this.$http.post('/usuario/biografia', { nombre: this.user})
+        .then(response => {
+          if (response.status === 200) {
+            this.biografia= response.data['biografia']
+          }
+        })
+        .catch(() => this.failed())
+  },
+
+  methods: {
+  editar() {
+    this.$http
+    //añadir campos a devolver
+      .post("/usuario/editarperfil", {
+        biografia: this.biografia,
+        nombre: this.user
+      })
+      .then(response => {
+        if (response.status === 200) {
+        }
+      })
+      .catch(() => this.loginFailed());
+  }
   }
 };
 </script>

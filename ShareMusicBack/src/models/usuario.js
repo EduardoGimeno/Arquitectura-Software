@@ -56,6 +56,7 @@ const numSeguidos = function (req,res) {
     bd.numSeguidos(data,res)
 }
 const numSeguidores = function (req,res) {
+    console.log(req.body.nombre)
     let data = [
         req.body.nombre
     ];

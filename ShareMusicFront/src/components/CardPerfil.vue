@@ -2,6 +2,7 @@
 <mdb-card>
   <mdb-card-body>
     <form>
+
       <div class="text-center ">
       <img v-bind:src="imagen" alt="avatar" class=" avatar rounded-circle  z-depth-1" height="50%" width="50%">
       </div>
@@ -19,11 +20,12 @@
         </div>
 
       <div class="grey-text">
-        <p class="h5 mt-4">@{{user}}</p>
+        <p class="h5 mt-4">@{{$route.params.username}}</p>
         <p class="h6  py-2">{{biografia}}</p>
         <router-link to="ListaUsuarios"><p class="h7 mt-4">{{seguidores}} <a>seguidores</a> </p></router-link>
         <router-link to="ListaUsuarios"><p class="h7">{{seguidos}} <a>seguidos</a></p></router-link>
         <router-link to="ListaUsuarios"><p class="h7">{{bloqueados}} <a>bloqueados</a></p></router-link>
+
 
 
         </div>
@@ -63,7 +65,7 @@
   },
   created: function () {
     //Se pide el número de seguidores
-    this.$http.post('/usuario/numSeguidores', { nombre: this.user})
+    this.$http.post('/usuario/numSeguidores', { nombre: this.$route.params.username})
         .then(response => {
           if (response.status === 200) {
             this.seguidores= response.data['totalSeguidores']
@@ -71,7 +73,7 @@
         })
         .catch(() => this.failed())
     //Se pide el número de seguidos
-    this.$http.post('/usuario/numSeguidos', { nombre: this.user})
+    this.$http.post('/usuario/numSeguidos', { nombre: this.$route.params.username})
         .then(response => {
           if (response.status === 200) {
             this.seguidos= response.data['totalSeguidos']
@@ -79,7 +81,7 @@
         })
         .catch(() => this.failed())
     //Se pide el número de bloqueados
-    this.$http.post('/usuario/numBloqueados', { nombre: this.user})
+    this.$http.post('/usuario/numBloqueados', { nombre: this.$route.params.username})
         .then(response => {
           if (response.status === 200) {
             this.bloqueados= response.data['totalBloqueados']
