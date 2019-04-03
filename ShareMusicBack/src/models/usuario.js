@@ -47,7 +47,10 @@ const desbloquear = function (req,res) {
     bd.usuario_desbloquear(data, res);
 }
 const perfil = function (req,res) {
-    console.log('perfil');
+    let data = [
+        req.body.nombre
+    ];
+    bd.usuario_perfil(data, res);
 }
 const numSeguidos = function (req,res) {
     let data = [

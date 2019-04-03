@@ -33,13 +33,13 @@ function connectionHandler(){
 connectionHandler();
 
 const usuario_login = function (data,res) {
-    let sql = 'SELECT Nombre, NombreReal, Email FROM usuario WHERE Email = ?  AND Contraseña = ?'
+    let sql = 'SELECT Nombre, NombreReal, Email, Biografia FROM usuario WHERE Email = ?  AND Contraseña = ?'
     conection.query(sql, data, function (err, result) {
       if (err) throw err
       if (result[0] === undefined) {
         res.status(201).send({ error: "Usuario no encontrado"})
       } else {
-        res.status(200).send({ nombre: result[0].Nombre, nombreReal: result[0].NombreReal, email: result[0].Email })
+        res.status(200).send({ nombre: result[0].Nombre, nombreReal: result[0].NombreReal, email: result[0].Email, biografia:result[0].Biografia})
       }
     })
 };
@@ -211,6 +211,15 @@ const usuario_biografia = function (data,res) {
     }
   })
 };
+const usuario_perfil = function (data,res) {
+  let sql = 'SELECT Nombre, NombreReal, Email, Biografia FROM usuario where Nombre=?;'
+  conection.query(sql, data, function (err, result) {
+    if (err) throw err
+    else {
+      res.status(200).send({ nombre: result[0].Nombre, nombreReal: result[0].NombreReal, email: result[0].Email, biografia:result[0].Biografia})
+    }
+  })
+};
 module.exports = {
     usuario_registro: usuario_registro,
     usuario_login: usuario_login,
@@ -226,5 +235,6 @@ module.exports = {
     usuario_listSeguidores:usuario_listSeguidores,
     usuario_listSeguidos:usuario_listSeguidos,
     usuario_editarperfil:usuario_editarperfil,
-    usuario_biografia:usuario_biografia
+    usuario_biografia:usuario_biografia,
+    usuario_perfil:usuario_perfil
 };
