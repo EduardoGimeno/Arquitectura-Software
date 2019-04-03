@@ -5,23 +5,20 @@
         <mdb-row > 
           <mdb-col  md="4">
             <ul style="list-style-type:none;">
-              <li ><CardUsuario/></li>
-              <li><CardUsuario/></li>
-              <li><CardUsuario/></li>
+              <li
+                is="CardUsuario"
+                v-for="user in users"
+                v-bind:key="user.UsuarioBloqueado"
+                v-bind:user="user.UsuarioBloqueado"
+              ></li>
             </ul>
           </mdb-col>
           <mdb-col md="4 ">
              <ul style="list-style-type:none;">
-              <li ><CardUsuario/></li>
-              <li><CardUsuario/></li>
-              <li><CardUsuario/></li>
             </ul>
           </mdb-col>
           <mdb-col md="4 ">
              <ul style="list-style-type:none;">
-              <li ><CardUsuario/></li>
-              <li><CardUsuario/></li>
-              <li><CardUsuario/></li>
             </ul>
           </mdb-col>
         </mdb-row>
@@ -36,7 +33,7 @@ import {  mdbCard, mdbCardImage, mdbCardHeader, mdbCardBody, mdbCardTitle, mdbCa
 import CardUsuario from "@/components/CardUsuario";
 import NavBarUsuario from "@/components/NavBarUsuario";
 export default {
-  name: 'Perfil',
+  name: 'ListaBloqueados',
   components: {
     NavBarUsuario,
     CardUsuario,
@@ -69,15 +66,51 @@ export default {
       this.$router.push('/')
     }
     else{
-      this.$http.post('/usuario/listSeguidores', { nombre: $route.params.username})
+      if(this.$route.params.type_list === 0){
+        this.$http.post('/usuario/listSeguidores', { nombre: this.$route.params.username})
         .then(response => {
           if (response.status === 200) {
-            this.seguidores= response.data['totalSeguidores']
+            this.users= response.data
           }
         })
         .catch(() => this.failed())
+      }
+      else if(this.$route.params.type_list === 1){
+         this.$http.post('/usuario/listSeguidos', { nombre: this.$route.params.username})
+        .then(response => {
+          if (response.status === 200) {
+            this.users= response.data
+          }
+        })
+        .catch(() => this.failed())
+      }
+      else{
+        this.$http.post('/usuario/listBloqueados', { nombre: this.$route.params.username})
+        .then(response => {
+          if (response.status === 200) {
+            this.users= response.data
+          } 
+        })
+        .catch(() => this.failed())
+      }
     }
   },
+  data() {
+    return {
+      users: ''
+    }
+  },
+  /*
+  created: function () {
+    this.$http.post('/usuario/listSeguidores', { nombre: this.$route.params.username})
+        .then(response => {
+          if (response.status === 200) {
+
+          }
+        })
+        .catch(() => this.failed())
+  
+  },*/
   methods: {
     logout: function () {
       this.$session.destroy()

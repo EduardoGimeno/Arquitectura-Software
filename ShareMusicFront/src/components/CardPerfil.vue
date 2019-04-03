@@ -22,10 +22,9 @@
       <div class="grey-text">
         <p class="h5 mt-4">@{{$route.params.username}}</p>
         <p class="h6  py-2">{{biografia}}</p>
-        <router-link to="ListaUsuarios"><p class="h7 mt-4">{{seguidores}} <a>seguidores</a> </p></router-link>
-        <router-link to="ListaUsuarios"><p class="h7">{{seguidos}} <a>seguidos</a></p></router-link>
-        <router-link to="ListaUsuarios"><p class="h7">{{bloqueados}} <a>bloqueados</a></p></router-link>
-
+        <router-link :to="{ name: 'ListaSeguidores', params: { username: 'javierprueba'}}"><p class="h7 mt-4">{{seguidores}} <a>seguidores</a> </p></router-link>
+         <router-link :to="{ name: 'ListaSeguidos', params: { username: 'javierprueba'}}"><p class="h7">{{seguidos}} <a>seguidos</a></p></router-link>
+         <router-link :to="{ name: 'ListaBloqueados', params: { username: 'javierprueba' }}"><p class="h7">{{bloqueados}} <a>bloqueados</a></p></router-link>
 
 
         </div>

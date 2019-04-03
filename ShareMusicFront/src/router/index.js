@@ -5,7 +5,9 @@ import Sign from '@/pages/Sign';
 import TimeLine from '@/pages/TimeLine';
 import Perfil from '@/pages/Perfil';
 import EdicionPerfil from '@/pages/EdicionPerfil';
-import ListaUsuarios from '@/pages/ListaUsuarios';
+import ListaSeguidores from '@/pages/ListaSeguidores';
+import ListaSeguidos from '@/pages/ListaSeguidos';
+import ListaBloqueados from '@/pages/ListaBloqueados';
 import Chat from '@/pages/Chat';
 import PruebaSeguimeinto from '@/pages/PruebaSeguimeinto';
 
@@ -40,9 +42,19 @@ export default new Router({
       component: EdicionPerfil
     },
     {
-      path: '/ListaUsuarios/:username/type/:type_list',
-      name: 'ListaUsuarios',
-      component: ListaUsuarios
+      path: '/ListaSeguidores/:username',
+      name: 'ListaSeguidores',
+      component: ListaSeguidores
+    },
+    {
+      path: '/ListaSeguidos/:username',
+      name: 'ListaSeguidos',
+      component: ListaSeguidos
+    },
+    {
+      path: '/ListaBloqueados/:username',
+      name: 'ListaBloqueados',
+      component: ListaBloqueados
     },
     {
       path: '/Chat',
