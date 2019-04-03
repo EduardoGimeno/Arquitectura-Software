@@ -62,10 +62,6 @@ export default {
     mdbView,
   },
   beforeCreate: function () {
-    if (!this.$session.exists()) {
-      this.$router.push('/')
-    }
-    else{
         this.$http.post('/usuario/listSeguidores', { nombre: this.$route.params.username})
         .then(response => {
           if (response.status === 200) {
@@ -73,7 +69,6 @@ export default {
           }
         })
         .catch(() => this.failed())
-    }
   },
   data() {
     return {

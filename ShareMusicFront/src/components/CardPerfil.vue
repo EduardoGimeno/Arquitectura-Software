@@ -1,97 +1,226 @@
 <template>
-<mdb-card>
-  <mdb-card-body>
-    <form>
+  <mdb-card>
+    <mdb-card-body>
+      <form>
 
-      <div class="text-center ">
-      <img v-bind:src="imagen" alt="avatar" class=" avatar rounded-circle  z-depth-1" height="50%" width="50%">
-      </div>
-
-      <p class="h4 text-center mt-4 mb-3">{{nombre}}</p>
-
-      <div v-if="publico" class="text-center  mb-5">
-        <mdb-btn v-if="seguido" outline="secondary">Dejar de seguir</mdb-btn>
-        <mdb-btn v-else  outline="secondary">Seguir</mdb-btn>
+        <form @submit.prevent="block">
+       <div v-if="publico" class="text-right">
+          <mdb-btn outline="secondary" type="submit">Bloquear</mdb-btn>
+          <a class="icons-sm li-ic" onclick="form.submit();"><mdb-icon icon="ban" /> </a>
         </div>
-        <div v-else class="text-center mb-5">
-          <router-link to="EdicionPerfil">
-        <mdb-btn  outline="secondary">Editar</mdb-btn>
+        </form>
+
+
+        <div class="text-center">
+          <img
+            v-bind:src="imagen"
+            alt="avatar"
+            class="avatar rounded-circle z-depth-1"
+            height="50%"
+            width="50%"
+          >
+        </div>
+
+        <p class="h4 text-center mt-4 mb-3">{{nombre}}</p>
+
+        <form @submit.prevent="seguir">
+          <div v-if="publico" class="text-center mb-5">
+            <mdb-btn v-if="seguido" outline="secondary" type="submit">Dejar de seguir</mdb-btn>
+            <mdb-btn v-else outline="secondary" type="submit">Seguir</mdb-btn>
+          </div>
+
+          <div v-else class="text-center mb-5">
+            <router-link :to="{ name: 'EdicionPerfil'}">
+              <mdb-btn outline="secondary">Editar</mdb-btn>
+            </router-link>
+          </div>
+        </form>
+
+        <div class="grey-text">
+          <p class="h5 mt-4">@{{$route.params.username}}</p>
+          <p class="h6 py-2">{{biografia}}</p>
+          <router-link :to="{ name: 'ListaSeguidores', params: { username: $route.params.username}}">
+            <p class="h7 mt-4">
+              {{seguidores}}
+              <a>seguidores</a>
+            </p>
+          </router-link>
+          <router-link :to="{ name: 'ListaSeguidos', params: { username: $route.params.username}}">
+            <p class="h7">
+              {{seguidos}}
+              <a>seguidos</a>
+            </p>
+          </router-link>
+          <router-link :to="{ name: 'ListaBloqueados', params: { username: $route.params.username}}">
+            <p class="h7">
+              {{bloqueados}}
+              <a>bloqueados</a>
+            </p>
           </router-link>
         </div>
-
-      <div class="grey-text">
-        <p class="h5 mt-4">@{{$route.params.username}}</p>
-        <p class="h6  py-2">{{biografia}}</p>
-        <router-link :to="{ name: 'ListaSeguidores', params: { username: 'javierprueba'}}"><p class="h7 mt-4">{{seguidores}} <a>seguidores</a> </p></router-link>
-         <router-link :to="{ name: 'ListaSeguidos', params: { username: 'javierprueba'}}"><p class="h7">{{seguidos}} <a>seguidos</a></p></router-link>
-         <router-link :to="{ name: 'ListaBloqueados', params: { username: 'javierprueba' }}"><p class="h7">{{bloqueados}} <a>bloqueados</a></p></router-link>
-
-
-        </div>
-    </form>
-  </mdb-card-body>
-</mdb-card>
-
+      </form>
+    </mdb-card-body>
+  </mdb-card>
 </template>
 
 <script>
-  import { mdbCard, mdbCardImage, mdbCardBody, mdbCardTitle, mdbCardText, mdbBtn, mdbInput  } from 'mdbvue';
+import {
+  mdbCard,
+  mdbCardImage,
+  mdbCardBody,
+  mdbCardTitle,
+  mdbCardText,
+  mdbBtn,
+  mdbInput
+} from "mdbvue";
 
-  export default {
-    name: 'CardPerfil',
-    name: 'Perfil',
-    components: {
-      mdbCard,
-      mdbCardImage,
-      mdbCardBody,
-      mdbCardTitle,
-      mdbCardText,
-      mdbBtn,
-      mdbInput
-    },
-    data() {
-    return {
-      user: this.$session.get('name'),
-      imagen: 'https://image.flaticon.com/icons/svg/149/149071.svg',
-      nombre:  this.$session.get('realname') ,
-      biografia:'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      seguidores:'',
-      seguidos:'',
-      bloqueados:'',
-      publico: false,
-      seguido: false
-    }
+export default {
+  name: "CardPerfil",
+  name: "Perfil",
+  components: {
+    mdbCard,
+    mdbCardImage,
+    mdbCardBody,
+    mdbCardTitle,
+    mdbCardText,
+    mdbBtn,
+    mdbInput
   },
-  created: function () {
+  data() {
+    return {
+      user: "",
+      imagen: "https://image.flaticon.com/icons/svg/149/149071.svg",
+      nombre: "",
+      biografia: "",
+      seguidores: "",
+      seguidos: "",
+      bloqueados: "",
+      publico: "",
+      seguido: false
+    };
+  },
+  created: function() {
     //Se pide el número de seguidores
-    this.$http.post('/usuario/numSeguidores', { nombre: this.$route.params.username})
-        .then(response => {
-          if (response.status === 200) {
-            this.seguidores= response.data['totalSeguidores']
-          }
-        })
-        .catch(() => this.failed())
-    //Se pide el número de seguidos
-    this.$http.post('/usuario/numSeguidos', { nombre: this.$route.params.username})
-        .then(response => {
-          if (response.status === 200) {
-            this.seguidos= response.data['totalSeguidos']
-          }
-        })
-        .catch(() => this.failed())
-    //Se pide el número de bloqueados
-    this.$http.post('/usuario/numBloqueados', { nombre: this.$route.params.username})
-        .then(response => {
-          if (response.status === 200) {
-            this.bloqueados= response.data['totalBloqueados']
-          }
-        })
-        .catch(() => this.failed())
+    this.$http
+      .post("/usuario/perfil", { nombre: this.$route.params.username })
+      .then(response => {
+        if (response.status === 200) {
+          this.user = response.data["nombre"];
+          this.nombre = response.data["nombreReal"];
+          this.biografia = response.data["biografia"];
+        }
+      })
+      .catch(() => this.failed());
 
+    this.$http
+      .post("/usuario/numSeguidores", { nombre: this.$route.params.username })
+      .then(response => {
+        if (response.status === 200) {
+          this.seguidores = response.data["totalSeguidores"];
+        }
+      })
+      .catch(() => this.failed());
+    //Se pide el número de seguidos
+    this.$http
+      .post("/usuario/numSeguidos", { nombre: this.$route.params.username })
+      .then(response => {
+        if (response.status === 200) {
+          this.seguidos = response.data["totalSeguidos"];
+        }
+      })
+      .catch(() => this.failed());
+    //Se pide el número de bloqueados
+    this.$http
+      .post("/usuario/numBloqueados", { nombre: this.$route.params.username })
+      .then(response => {
+        if (response.status === 200) {
+          this.bloqueados = response.data["totalBloqueados"];
+        }
+      })
+      .catch(() => this.failed());
+    if (this.$route.params.username !== this.$session.get("name")) {
+      this.publico = true;
+      this.$http
+        .post("/usuario/esSeguidor", {
+          usuario: "javierprueba",
+          usuarioSeguido: "juanPrueba"
+        })
+        .then(response => {
+          if (response.status === 200) {
+            if (response.data["seguido"] === 1) {
+              //Si se siguen se muestra el botón  'Dejar de seguir'
+              this.seguido = true;
+            } else {
+              //Si NO se siguen se muestra el botón  'Seguir'
+              this.seguido = false;
+            }
+          }
+        })
+        .catch(() => this.failed());
+    } else {
+      this.publico = false;
+    }
   },
   methods: {
-    failed () {
-        }
+    failed() {},
+    seguir() {
+      if (this.seguido === false) {
+        this.$http
+          .post("/usuario/seguir", {
+            nombre: "javierprueba",
+            nombreSeguir: this.user
+          })
+          .then(response => {
+            if (response.status === 200) {
+              this.seguido = true;
+            }
+          })
+          .catch(() => this.loginFailed());
+      } else {
+        this.$http
+          .post("/usuario/noseguir", {
+            nombre: "javierprueba",
+            nombreSeguir: this.user
+          })
+          .then(response => {
+            if (response.status === 200) {
+              this.seguido = false;
+            }
+          })
+          .catch(() => this.loginFailed());
+      }
+    },
+    block() {
+      if (this.bloqueado === false) {
+        this.$http
+          .post("/usuario/bloquear", {
+            nombre: "javierprueba",
+            nombreBloquear: this.user
+          })
+          .then(response => {
+            if (response.status === 200) {
+              this.bloqueado = true;
+            }
+          })
+          .catch(() => this.loginFailed());
+      } else {
+        this.$http
+          .post("/usuario/desbloquear", {
+            nombre: "javierprueba",
+            nombreBloquear: this.user
+          })
+          .then(response => {
+            if (response.status === 200) {
+              this.seguido = false;
+            }
+          })
+          .catch(() => this.loginFailed());
+      }
+    },
+    loginFailed() {
+      this.error = "Login failed!";
+      delete localStorage.token;
     }
   }
+};
 </script>

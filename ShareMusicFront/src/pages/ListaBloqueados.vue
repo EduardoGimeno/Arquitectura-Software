@@ -62,29 +62,7 @@ export default {
     mdbView,
   },
   beforeCreate: function () {
-    if (!this.$session.exists()) {
-      this.$router.push('/')
-    }
-    else{
-      if(this.$route.params.type_list === 0){
-        this.$http.post('/usuario/listSeguidores', { nombre: this.$route.params.username})
-        .then(response => {
-          if (response.status === 200) {
-            this.users= response.data
-          }
-        })
-        .catch(() => this.failed())
-      }
-      else if(this.$route.params.type_list === 1){
-         this.$http.post('/usuario/listSeguidos', { nombre: this.$route.params.username})
-        .then(response => {
-          if (response.status === 200) {
-            this.users= response.data
-          }
-        })
-        .catch(() => this.failed())
-      }
-      else{
+
         this.$http.post('/usuario/listBloqueados', { nombre: this.$route.params.username})
         .then(response => {
           if (response.status === 200) {
@@ -92,8 +70,6 @@ export default {
           } 
         })
         .catch(() => this.failed())
-      }
-    }
   },
   data() {
     return {
