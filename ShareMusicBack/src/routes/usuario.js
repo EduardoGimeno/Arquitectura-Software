@@ -17,6 +17,7 @@ router.post('/numSeguidos',usuario.numSeguidos);//
 router.post('/listBloqueados',usuario.listBloqueados);
 router.post('/listSeguidores',usuario.listSeguidores);
 router.post('/listSeguidos',usuario.listSeguidos);
+router.post('/perfil',usuario.perfil)
 
 //esBloqueado
 //editarPerfil con Nombre, email, y password
