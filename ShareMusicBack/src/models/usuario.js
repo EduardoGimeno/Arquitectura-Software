@@ -109,6 +109,12 @@ const biografia = function (req,res) {
     ];
     bd.usuario_biografia(data,res)
 }
+const borrar = function (req,res) {
+    let data = [
+        req.body.nombre
+    ];
+    bd.usuario_borrar(data,res)
+}
 module.exports = {
     login: login,
     registro:registro,
@@ -126,5 +132,6 @@ module.exports = {
     listSeguidores:listSeguidores,
     listSeguidos:listSeguidos,
     editarperfil:editarperfil,
-    biografia:biografia
+    biografia:biografia,
+    borrar:borrar
 }

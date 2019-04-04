@@ -8,33 +8,12 @@ var conection_cfg = {
     database:'heroku_efb95a0eab20b17'
 
 };
-
-var conection;
-// mySql cierra la conexion cuando se le agota el timeout, 
-// volver a lanzar
-conection = mysql.createConnection(conection_cfg);
-function connectionHandler(){
-    conection = mysql.createConnection(conection_cfg);
-    conection.connect(function (err) {
-        if(err){
-            console.log('Error al conectar a bd');
-        }
-        console.log('Conectado con bd')
-    });
-    conection.on('error', function(err) {
-        if(err.code === 'PROTOCOL_CONNECTION_LOST') {
-            console.log('Reconectando a bd...');
-            connectionHandler();
-        } else {
-            throw err;
-        }
-    });
-}
-connectionHandler();
+// Crear pool de conexiones
+var pool =  mysql.createPool(conection_cfg)
 
 const usuario_login = function (data,res) {
     let sql = 'SELECT Nombre, NombreReal, Email, Biografia FROM usuario WHERE Email = ?  AND Contraseña = ?'
-    conection.query(sql, data, function (err, result) {
+    pool.query(sql, data, function (err, result) {
       if (err) throw err
       if (result[0] === undefined) {
         res.status(201).send({ error: "Usuario no encontrado"})
@@ -46,15 +25,15 @@ const usuario_login = function (data,res) {
 
 const usuario_registro = function (data,res) {
     let sql = 'SELECT Nombre, NombreReal, Email FROM usuario WHERE Nombre = ?';
-    conection.query(sql,data[0], function (err, result) {
+    pool.query(sql,data[0], function (err, result) {
         if (err) throw err;
         if (result[0] === undefined) {
             let sql = 'SELECT Nombre, NombreReal, Email FROM usuario WHERE Email = ?';
-            conection.query(sql,data[2], function (err, result) {
+            pool.query(sql,data[2], function (err, result) {
                 if (err) throw err;
                 if (result[0] === undefined) {
                     let sql = 'INSERT INTO usuario(Nombre, NombreReal, Email, Contraseña) VALUES (?) ';
-                    conection.query(sql,[data], function (err, result) {
+                    pool.query(sql,[data], function (err, result) {
                         if (err) throw err;
                         if (result.affectedRows === 0) {
                             res.status(201).send({error: "Lo siento, ha ocurrido un problema, intentelo de nuevo"})
@@ -74,7 +53,7 @@ const usuario_registro = function (data,res) {
 
 const numSeguidos = function (data,res) {
     let sql = 'select count(*) as seguidos from seguidos where NomUsuario= ?'
-    conection.query(sql, data, function (err, result) {
+    pool.query(sql, data, function (err, result) {
       if (err) throw err
       else {
         res.status(200).send({ totalSeguidos: result[0]['seguidos'] })
@@ -83,7 +62,7 @@ const numSeguidos = function (data,res) {
 };
 const numSeguidores = function (data,res) {
     let sql = 'select count(*) as seguidores from seguidos where UsuarioSeguido= ?'
-    conection.query(sql, data, function (err, result) {
+    pool.query(sql, data, function (err, result) {
       if (err) throw err
       else {
         res.status(200).send({ totalSeguidores: result[0]['seguidores']})
@@ -92,7 +71,7 @@ const numSeguidores = function (data,res) {
 };
 const numBloqueados = function (data,res) {
     let sql = 'select count(*) as bloqueados from bloqueados where NomUsuario= ?'
-    conection.query(sql, data, function (err, result) {
+    pool.query(sql, data, function (err, result) {
       if (err) throw err
       else {
         res.status(200).send({ totalBloqueados: result[0]['bloqueados']})
@@ -102,7 +81,7 @@ const numBloqueados = function (data,res) {
 
 const usuario_seguir = function (data,res) {
     let sql = 'INSERT INTO seguidos (NomUsuario, UsuarioSeguido) VALUES(?)'
-    conection.query(sql, [data], function (err, result) {
+    pool.query(sql, [data], function (err, result) {
       if (err) throw err
       else {
         res.status(200).send()
@@ -112,7 +91,7 @@ const usuario_seguir = function (data,res) {
 
 const usuario_dejarseguir = function (data,res) {
     let sql = 'DELETE FROM seguidos WHERE NomUsuario=? AND UsuarioSeguido=?'
-    conection.query(sql, data, function (err, result) {
+    pool.query(sql, data, function (err, result) {
       if (err) throw err
       else {
         res.status(200).send()
@@ -122,11 +101,11 @@ const usuario_dejarseguir = function (data,res) {
 
 const usuario_bloquear = function (data,res) {
     let sql = 'INSERT INTO bloqueados (NomUsuario, UsuarioBloqueado) VALUES(?);'
-    conection.query(sql, [data], function (err, result) {
+    pool.query(sql, [data], function (err, result) {
       if (err) throw err
       else {
         let sql = 'DELETE FROM seguidos WHERE NomUsuario=? AND UsuarioSeguido=?'
-        conection.query(sql, data, function (err, result) {
+        pool.query(sql, data, function (err, result) {
           if (err) throw err
           else {
             res.status(200).send()
@@ -137,7 +116,7 @@ const usuario_bloquear = function (data,res) {
 };
 const usuario_desbloquear = function (data,res) {
     let sql = 'DELETE FROM bloqueados  WHERE NomUsuario=? AND UsuarioBloqueado=?'
-    conection.query(sql, data, function (err, result) {
+    pool.query(sql, data, function (err, result) {
       if (err) throw err
       else {
         res.status(200).send()
@@ -146,11 +125,11 @@ const usuario_desbloquear = function (data,res) {
 };
 const usuario_esSeguidor = function (data,res) {
   let sql = 'SELECT * FROM seguidos WHERE NomUsuario=? AND UsuarioSeguido=?'
-  conection.query(sql, data, function (err, result) {
+  pool.query(sql, data, function (err, result) {
     if (err) throw err
     if (result[0] === undefined) {
       let sql = 'SELECT * FROM bloqueados WHERE NomUsuario=? AND UsuarioBloqueado=?'
-        conection.query(sql, data, function (err, result) {
+        pool.query(sql, data, function (err, result) {
           if (err) throw err
           if (result[0] === undefined) {
             res.status(200).send({seguido:0, bloqueado:0})
@@ -168,7 +147,7 @@ const usuario_esSeguidor = function (data,res) {
 
 const usuario_listBloqueados = function (data,res) {
   let sql = 'select UsuarioBloqueado from bloqueados where NomUsuario= ?'
-  conection.query(sql, data, function (err, result) {
+  pool.query(sql, data, function (err, result) {
     if (err) throw err
     else {
       res.status(200).send(result)
@@ -177,7 +156,7 @@ const usuario_listBloqueados = function (data,res) {
 };
 const usuario_listSeguidores = function (data,res) {
   let sql = 'select NomUsuario from seguidos where UsuarioSeguido= ?'
-  conection.query(sql, data, function (err, result) {
+  pool.query(sql, data, function (err, result) {
     if (err) throw err
     else {
       res.status(200).send(result)
@@ -186,7 +165,7 @@ const usuario_listSeguidores = function (data,res) {
 };
 const usuario_listSeguidos = function (data,res) {
   let sql = 'select UsuarioSeguido from seguidos where NomUsuario= ?'
-  conection.query(sql, data, function (err, result) {
+  pool.query(sql, data, function (err, result) {
     if (err) throw err
     else {
       res.status(200).send(result)
@@ -195,7 +174,7 @@ const usuario_listSeguidos = function (data,res) {
 };
 const usuario_editarperfil = function (data,res) {
   let sql = 'update usuario SET Biografia=? WHERE Nombre=?'
-  conection.query(sql, data, function (err, result) {
+  pool.query(sql, data, function (err, result) {
     if (err) throw err
     else {
       res.status(200).send()
@@ -204,7 +183,7 @@ const usuario_editarperfil = function (data,res) {
 };
 const usuario_biografia = function (data,res) {
   let sql = 'SELECT Biografia FROM usuario WHERE Nombre=?'
-  conection.query(sql, data, function (err, result) {
+  pool.query(sql, data, function (err, result) {
     if (err) throw err
     else {
       res.status(200).send({ biografia: result[0].Biografia})
@@ -213,10 +192,20 @@ const usuario_biografia = function (data,res) {
 };
 const usuario_perfil = function (data,res) {
   let sql = 'SELECT Nombre, NombreReal, Email, Biografia FROM usuario where Nombre=?;'
-  conection.query(sql, data, function (err, result) {
+  pool.query(sql, data, function (err, result) {
     if (err) throw err
     else {
       res.status(200).send({ nombre: result[0].Nombre, nombreReal: result[0].NombreReal, email: result[0].Email, biografia:result[0].Biografia})
+    }
+  })
+};
+
+const usuario_borrar = function (data,res) {
+  let sql = 'DELETE FROM usuario WHERE Nombre=?;'
+  pool.query(sql, data, function (err, result) {
+    if (err) throw err
+    else {
+      res.status(200).send()
     }
   })
 };
@@ -236,5 +225,6 @@ module.exports = {
     usuario_listSeguidos:usuario_listSeguidos,
     usuario_editarperfil:usuario_editarperfil,
     usuario_biografia:usuario_biografia,
-    usuario_perfil:usuario_perfil
-};
+    usuario_perfil:usuario_perfil,
+    usuario_borrar:usuario_borrar
+}
