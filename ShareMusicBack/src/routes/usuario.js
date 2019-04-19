@@ -17,8 +17,10 @@ router.post('/numSeguidos',usuario.numSeguidos);
 router.post('/listBloqueados',usuario.listBloqueados);
 router.post('/listSeguidores',usuario.listSeguidores);
 router.post('/listSeguidos',usuario.listSeguidos);
-router.post('/perfil',usuario.perfil)
-router.post('/borrar',usuario.borrar)
+router.post('/perfil',usuario.perfil);
+router.post('/borrar',usuario.borrar);
+
+module.exports=router;
 
 //Cambiar contraseña
     //Parámetros: contraseña antigua y contraseña nueva
@@ -56,4 +58,3 @@ router.post('/borrar',usuario.borrar)
 //Buscar usuarios
     //Parámetros: nombre completo o nombre de usuario
 
-module.exports=router;

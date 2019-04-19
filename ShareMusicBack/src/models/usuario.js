@@ -15,7 +15,6 @@ const registro = function (req,res) {
         req.body.email,
         req.body.pass
     ];
-    
    bd.usuario_registro(data, res);
 }
 const seguir = function (req,res) {
@@ -24,9 +23,6 @@ const seguir = function (req,res) {
         req.body.nombreSeguir
     ];
     bd.usuario_seguir(data, res);
-    console.log("SEGUIR:")
-    console.log(req.body.nombreSeguir)
-
 }
 const noseguir = function (req,res) {
     let data = [
