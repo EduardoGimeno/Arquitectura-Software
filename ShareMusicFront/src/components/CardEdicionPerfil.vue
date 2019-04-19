@@ -32,20 +32,44 @@
             </mdb-col>
           </mdb-row>
 
+          <div class="text-center py-4 mt-4">
+            <mdb-btn color="grey" type="submit">Guardar cambios</mdb-btn>
+          </div>
+        </div>
+      </form>
+
+      <form @submit.prevent="cambiopass">
+        <div class="grey-text">
           <div class="center">
             <p class="h4 mt-5">Nueva contraseña</p>
-            <mdb-input v-model="password" label="Password" icon="lock" type="password"/>
+            <mdb-input v-model="oldPass" label="Old Password" icon="lock" type="password"/>
+            <mdb-input v-model="newPass" label="Password" icon="lock" type="password"/>
             <mdb-input
-              v-model="passwordRep"
+              v-model="newPass2"
               label="Confirmar password"
               icon="lock"
               type="password"
             />
             <div class="alert alert-danger" v-if="error">{{ error }}</div>
           </div>
+
+          <div class="text-center py-4 mt-4">
+            <mdb-btn color="grey" type="submit">Cambiar contraseña</mdb-btn>
+          </div>
         </div>
-        <div class="text-center py-4 mt-4">
-          <mdb-btn color="grey" type="submit">Guardar cambios</mdb-btn>
+      </form>
+
+      <form @submit.prevent="eliminar">
+        <div class="grey-text">
+          <div class="center">
+            <p class="h4 mt-5">Eliminar cuenta</p>
+            <mdb-input v-model="oldPass" label="Password" icon="lock" type="password"/>
+            <div class="alert alert-danger" v-if="error">{{ error }}</div>
+          </div>
+
+          <div class="text-center py-4 mt-4">
+            <mdb-btn color="grey" type="submit">Eliminar cuenta</mdb-btn>
+          </div>
         </div>
       </form>
     </mdb-card-body>
@@ -97,35 +121,65 @@ export default {
       imagen: "https://image.flaticon.com/icons/svg/149/149071.svg",
       name: this.$session.get("realname"),
       user: this.$session.get("name"),
-      biografia: ''
+      biografia: "",
+      oldPass: "",
+      newPass:"",
+      newPass2: ""
     };
   },
 
-  created: function () {
+  created: function() {
     //cambiar por petición de todo el perfil
-    this.$http.post('/usuario/biografia', { nombre: this.user})
-        .then(response => {
-          if (response.status === 200) {
-            this.biografia= response.data['biografia']
-          }
-        })
-        .catch(() => this.failed())
-  },
-
-  methods: {
-  editar() {
     this.$http
-    //añadir campos a devolver
-      .post("/usuario/editarperfil", {
-        biografia: this.biografia,
-        nombre: this.user
-      })
+      .post("/usuario/biografia", { nombre: this.user })
       .then(response => {
         if (response.status === 200) {
+          this.biografia = response.data["biografia"];
         }
       })
-      .catch(() => this.loginFailed());
-  }
+      .catch(() => this.failed());
+  },
+  methods: {
+    editar() {
+      this.$http
+        //añadir campos a devolver
+        .post("/usuario/editarperfil", {
+          biografia: this.biografia,
+          nombre: this.user
+        })
+        .then(response => {
+          if (response.status === 200) {
+          }
+        })
+        .catch(() => this.loginFailed());
+    },
+    cambiopass() {
+
+      if(this.newPass == this.newPass2 && this.oldPass != ""){
+        this.$http
+        .post("/usuario/cambiarpass", {
+          oldPass: this.oldPass,
+          newPass: this.newPass
+        })
+        .then(response => {
+          if (response.status === 200) {
+          }
+        })
+        .catch(() => this.loginFailed());
+      }
+      
+    },
+    eliminar() {
+      this.$http
+        .post("/usuario/borrar", {
+          oldPass: this.oldPass,
+        })
+        .then(response => {
+          if (response.status === 200) {
+          }
+        })
+        .catch(() => this.loginFailed());
+    }
   }
 };
 </script>

@@ -24,6 +24,9 @@ const seguir = function (req,res) {
         req.body.nombreSeguir
     ];
     bd.usuario_seguir(data, res);
+    console.log("SEGUIR:")
+    console.log(req.body.nombreSeguir)
+
 }
 const noseguir = function (req,res) {
     let data = [
@@ -59,7 +62,6 @@ const numSeguidos = function (req,res) {
     bd.numSeguidos(data,res)
 }
 const numSeguidores = function (req,res) {
-    console.log(req.body.nombre)
     let data = [
         req.body.nombre
     ];

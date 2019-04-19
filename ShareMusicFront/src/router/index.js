@@ -9,7 +9,6 @@ import ListaSeguidores from '@/pages/ListaSeguidores';
 import ListaSeguidos from '@/pages/ListaSeguidos';
 import ListaBloqueados from '@/pages/ListaBloqueados';
 import Chat from '@/pages/Chat';
-import PruebaSeguimeinto from '@/pages/PruebaSeguimeinto';
 
 Vue.use(Router);
 
@@ -61,10 +60,5 @@ export default new Router({
       name: 'Chat',
       component: Chat
     },
-    {
-      path: '/PruebaSeguimeinto',
-      name: 'PruebaSeguimeinto',
-      component: PruebaSeguimeinto
-    }
   ]
 });
