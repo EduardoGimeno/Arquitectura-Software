@@ -201,11 +201,98 @@ const usuario_perfil = function (data,res) {
 };
 
 const usuario_borrar = function (data,res) {
-  let sql = 'DELETE FROM usuario WHERE Nombre=?;'
+  let sql = 'DELETE FROM usuario WHERE Nombre=? AND Contraseña=?;'
   pool.query(sql, data, function (err, result) {
     if (err) throw err
     else {
       res.status(200).send()
+    }
+  })
+};
+const usuario_cambiarpass = function (data,res) {
+  let sql = 'UPDATE usuario SET Contraseña=? WHERE Nombre=? AND Contraseña=?;'
+  pool.query(sql, data, function (err, result) {
+    if (err) throw err
+    else {
+      res.status(200).send()
+    }
+  })
+};
+
+const usuario_buscarusuarios = function (data,res) {
+  var busqueda='\''
+  busqueda+=data[0]
+  busqueda+='%\''
+  let sql = 'SELECT Nombre, NombreReal FROM usuario where Nombre like '+ busqueda+' or NombreReal like '+ busqueda+'; '
+  pool.query(sql, data, function (err, result) {
+    if (err) throw err
+    else {
+      res.status(200).send(result)
+    }
+  })
+};
+// POST 
+const post_get_todos_posts = function (data,res) {
+  let sql = 'SELECT a.* FROM post a , seguidos b where (a.NomUsuario=b.NomUsuario or a.NomUsuario=b.UsuarioSeguido) and b.NomUsuario=? order by a.Id desc'
+  pool.query(sql, data, function (err, result) {
+    if (err) throw err
+    else {
+      res.status(200).send(result)
+    }
+  })
+};
+const post_get_propios_posts = function (data,res) {
+  let sql = 'SELECT * FROM post where NomUsuario = ? order by Id desc'
+  pool.query(sql, data, function (err, result) {
+    if (err) throw err
+    else {
+      res.status(200).send(result)
+    }
+  })
+};
+const post_add_post = function (data,res) {
+  let sql = 'INSERT INTO post (NomUsuario, Texto, Likes, Dislikes, Titulo) VALUES(?, ?, 0, 0, ?);'
+  pool.query(sql, data, function (err, result) {
+    if (err) throw err
+    else {
+      res.status(200).send(result)
+    }
+  })
+};
+const post_editar_post = function (data,res) {
+  let sql = 'UPDATE post SET Texto=? ,Titulo=? WHERE Id=?'
+  pool.query(sql, data, function (err, result) {
+    if (err) throw err
+    else {
+      res.status(200).send(result)
+    }
+  })
+};
+const post_borrar_post = function (data,res) {
+  let sql = 'DELETE FROM post  WHERE Id=?;'
+  pool.query(sql, data, function (err, result) {
+    if (err) throw err
+    else {
+      res.status(200).send(result)
+    }
+  })
+};
+
+const post_like = function (data,res) {
+  let sql = 'UPDATE post SET Likes= Likes + 1 WHERE Id=?;'
+  pool.query(sql, data, function (err, result) {
+    if (err) throw err
+    else {
+      res.status(200).send(result)
+    }
+  })
+};
+const post_dislike = function (data,res) {
+  let sql = 'UPDATE post SET Dislikes = Dislikes + 1 WHERE Id=?;'
+  pool.query(sql, data, function (err, result) {
+    if (err) throw err
+    else {
+      res.status(200).send(result)
     }
   })
 };
@@ -226,5 +313,14 @@ module.exports = {
     usuario_editarperfil:usuario_editarperfil,
     usuario_biografia:usuario_biografia,
     usuario_perfil:usuario_perfil,
-    usuario_borrar:usuario_borrar
+    usuario_borrar:usuario_borrar,
+    usuario_cambiarpass:usuario_cambiarpass,
+    usuario_buscarusuarios:usuario_buscarusuarios,
+    post_get_todos_posts:post_get_todos_posts,
+    post_get_propios_posts:post_get_propios_posts,
+    post_add_post:post_add_post,
+    post_borrar_post:post_borrar_post,
+    post_editar_post:post_editar_post,
+    post_like:post_like,
+    post_dislike:post_dislike
 }

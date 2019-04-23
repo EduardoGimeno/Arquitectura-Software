@@ -158,6 +158,7 @@ export default {
       if(this.newPass == this.newPass2 && this.oldPass != ""){
         this.$http
         .post("/usuario/cambiarpass", {
+          nombre: this.user,
           oldPass: this.oldPass,
           newPass: this.newPass
         })
@@ -172,6 +173,7 @@ export default {
     eliminar() {
       this.$http
         .post("/usuario/borrar", {
+          nombre: this.user,
           oldPass: this.oldPass,
         })
         .then(response => {

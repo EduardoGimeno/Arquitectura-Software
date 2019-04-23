@@ -2,7 +2,7 @@ const morgan = require('morgan');
 const routesUsuario = require('../routes/usuario')
 var cors = require('cors')
 var bodyParser = require('body-parser')
-//const routesPosts = require('../routes/post')
+const routesPosts = require('../routes/post')
 module.exports = app => {
 
     // ajustes 
@@ -12,7 +12,7 @@ module.exports = app => {
     app.use(bodyParser.json());
     // rutas
     app.use('/usuario',routesUsuario);
-    //app.use('/post',routesPosts);
+    app.use('/post',routesPosts);
 
     // mostrar mensajes
     app.use(morgan('dev'));

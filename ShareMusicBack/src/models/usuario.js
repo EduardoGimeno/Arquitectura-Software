@@ -109,10 +109,27 @@ const biografia = function (req,res) {
 }
 const borrar = function (req,res) {
     let data = [
-        req.body.nombre
+        req.body.nombre,
+        req.body.oldPass
     ];
     bd.usuario_borrar(data,res)
 }
+
+const cambiarpass = function (req,res) {
+    let data = [
+        req.body.newPass,
+        req.body.nombre,
+        req.body.oldPass        
+    ];
+    bd.usuario_cambiarpass(data,res)
+}
+const buscarusuarios = function (req,res) {
+    let data = [
+        req.body.nombre
+    ];
+    bd.usuario_buscarusuarios(data,res)
+}
+
 module.exports = {
     login: login,
     registro:registro,
@@ -131,5 +148,7 @@ module.exports = {
     listSeguidos:listSeguidos,
     editarperfil:editarperfil,
     biografia:biografia,
-    borrar:borrar
+    borrar:borrar,
+    cambiarpass:cambiarpass,
+    buscarusuarios
 }

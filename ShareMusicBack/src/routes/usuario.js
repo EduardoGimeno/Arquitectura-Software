@@ -19,15 +19,10 @@ router.post('/listSeguidores',usuario.listSeguidores);
 router.post('/listSeguidos',usuario.listSeguidos);
 router.post('/perfil',usuario.perfil);
 router.post('/borrar',usuario.borrar);
+router.post('/cambiarpass',usuario.cambiarpass);
+router.post('/buscarusuarios',usuario.buscarusuarios);
 
 module.exports=router;
 
-//Cambiar contraseña
-    //Parámetros: contraseña antigua y contraseña nueva
 
-//Borrar cuenta
-    //Faltaría ---> //Parámetros: contraseña antigua
-
-//Buscar usuarios
-    //Parámetros: nombre completo o nombre de usuario
 
