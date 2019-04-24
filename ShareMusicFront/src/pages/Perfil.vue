@@ -15,14 +15,15 @@
               <li
                 is="CardContent"
                 v-for="post in posts"
-                v-if="post.id% 2 !== 0"
-                v-bind:key="post.id"
-                v-bind:imagen="post.imagen"
-                v-bind:user="post.user"
-                v-bind:title="post.title"
-                v-bind:description="post.description"
-                v-bind:likes="post.likes"
-                v-bind:dislikes="post.dislikes"
+                v-if="post.Id% 2 !== 0"
+                v-bind:key="post.Id"
+                v-bind:id="post.Id"
+                v-bind:imagen="'https://cdn.24.co.za/files/Cms/General/d/8224/e9c5b671161d4807aa61b5a305f4a3b7.png'"
+                v-bind:user="post.NomUsuario"
+                v-bind:title="post.Titulo"
+                v-bind:description="post.Texto"
+                v-bind:likes="post.Likes"
+                v-bind:dislikes="post.Dislikes"
                 v-bind:comments="post.comments"
               ></li>
             </ul>
@@ -33,14 +34,15 @@
               <li
                 is="CardContent"
                 v-for="(post) in posts"
-                v-if="post.id% 2 === 0"
-                v-bind:key="post.id"
-                v-bind:imagen="post.imagen"
-                v-bind:user="post.user"
-                v-bind:title="post.title"
-                v-bind:description="post.description"
-                v-bind:likes="post.likes"
-                v-bind:dislikes="post.dislikes"
+                v-if="post.Id% 2 === 0"
+                v-bind:key="post.Id"
+                v-bind:id="post.Id"
+                v-bind:imagen="'https://cdn.24.co.za/files/Cms/General/d/8224/e9c5b671161d4807aa61b5a305f4a3b7.png'"
+                v-bind:user="post.NomUsuario"
+                v-bind:title="post.Titulo"
+                v-bind:description="post.Texto"
+                v-bind:likes="post.Likes"
+                v-bind:dislikes="post.Dislikes"
                 v-bind:comments="post.comments"
               ></li>
 
@@ -92,49 +94,6 @@ export default {
     mdbCardGroup,
     mdbView,
   },
-  data() {
-    return {
-      imagen:'https://image.flaticon.com/icons/svg/149/149071.svg',
-      nombre: 'Nombre Apellidos',
-      user: '@User',
-      biografia:'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      seguidores:609,
-      seguidos:100,
-      bloqueados:50,
-      posts:[
-        {
-          id:1,
-          imagen:'https://cdn.24.co.za/files/Cms/General/d/8224/e9c5b671161d4807aa61b5a305f4a3b7.png',
-          user: '@User',
-          title:'Cheat day inspirations',
-          description: 'Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi.',
-          likes:609,
-          dislikes:100,
-          comments:50
-        },
-        {
-          id:2,
-          imagen:'https://cdn.24.co.za/files/Cms/General/d/8224/e9c5b671161d4807aa61b5a305f4a3b7.png',
-          user: '@User',
-          title:'Cheat day inspirations',
-          description: 'Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi.',
-          likes:609,
-          dislikes:100,
-          comments:50
-        },
-        {
-          id:3,
-          imagen:'https://cdn.24.co.za/files/Cms/General/d/8224/e9c5b671161d4807aa61b5a305f4a3b7.png',
-          user: '@User',
-          title:'Cheat day inspirations',
-          description: 'Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi.',
-          likes:609,
-          dislikes:100,
-          comments:50
-        }
-      ]
-    }
-  },
   colum1: function () {
     return posts.filter(function (post) {
       return post.id % 2 === 0
@@ -147,10 +106,21 @@ export default {
   },
 
   beforeCreate: function () {
-    /*
-    if (!this.$session.exists()) {
-      this.$router.push('/')
-    }*/
+         this.$http.post('/post/listarPostsUsuario', {
+            nombre: this.$route.params.username
+            })
+
+        .then(response => {
+          if (response.status === 200) {
+            this.posts= response.data
+          }
+        })
+        .catch(() => this.failed())
+  },
+  data() {
+    return {
+      posts: ''
+    }
   },
   methods: {
     logout: function () {

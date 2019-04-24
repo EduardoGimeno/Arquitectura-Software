@@ -233,18 +233,21 @@ const usuario_buscarusuarios = function (data,res) {
 };
 // POST 
 const post_get_todos_posts = function (data,res) {
-  let sql = 'SELECT a.* FROM post a , seguidos b where (a.NomUsuario=b.NomUsuario or a.NomUsuario=b.UsuarioSeguido) and b.NomUsuario=? order by a.Id desc'
+  let sql = 'SELECT DISTINCT a.* FROM post a , seguidos b where (a.NomUsuario=b.NomUsuario or a.NomUsuario=b.UsuarioSeguido) and b.NomUsuario=? order by a.Id desc'
   pool.query(sql, data, function (err, result) {
     if (err) throw err
     else {
       res.status(200).send(result)
+      console.log(result)
     }
   })
 };
 const post_get_propios_posts = function (data,res) {
   let sql = 'SELECT * FROM post where NomUsuario = ? order by Id desc'
   pool.query(sql, data, function (err, result) {
-    if (err) throw err
+    if (err){
+      throw err
+    }
     else {
       res.status(200).send(result)
     }
@@ -274,6 +277,7 @@ const post_borrar_post = function (data,res) {
     if (err) throw err
     else {
       res.status(200).send(result)
+      
     }
   })
 };

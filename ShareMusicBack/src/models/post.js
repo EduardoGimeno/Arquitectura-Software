@@ -7,6 +7,7 @@ const get_todos_posts = function (req,res) {
     bd.post_get_todos_posts(data,res)
 }
 const get_propios_posts = function (req,res) {
+    console.log(req)
     let data = [
         req.body.nombre
     ];

@@ -8,6 +8,7 @@ import EdicionPerfil from '@/pages/EdicionPerfil';
 import ListaSeguidores from '@/pages/ListaSeguidores';
 import ListaSeguidos from '@/pages/ListaSeguidos';
 import ListaBloqueados from '@/pages/ListaBloqueados';
+import ListaBuscados from '@/pages/ListaBuscados';
 import Chat from '@/pages/Chat';
 
 Vue.use(Router);
@@ -54,6 +55,11 @@ export default new Router({
       path: '/ListaBloqueados/:username',
       name: 'ListaBloqueados',
       component: ListaBloqueados
+    },
+    {
+      path: '/ListaBuscados/:busq',
+      name: 'ListaBuscados',
+      component: ListaBuscados
     },
     {
       path: '/Chat',

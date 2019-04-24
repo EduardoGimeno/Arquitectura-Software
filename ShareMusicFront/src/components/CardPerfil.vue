@@ -149,8 +149,8 @@ export default {
       this.publico = true;
       this.$http
         .post("/usuario/esSeguidor", {
-          usuario: "javierprueba",
-          usuarioSeguido: "juanPrueba"
+          usuario: this.$session.get("name"),
+          usuarioSeguido: this.$route.params.username
         })
         .then(response => {
           if (response.status === 200) {
@@ -183,8 +183,8 @@ export default {
       if (this.seguido === false) {
         this.$http
           .post("/usuario/seguir", {
-            nombre: "javierprueba",
-            nombreSeguir: "juanPrueba"
+            nombre: this.$session.get("name"),
+            nombreSeguir: this.$route.params.username
           })
           .then(response => {
             if (response.status === 200) {
@@ -195,8 +195,8 @@ export default {
       } else {
         this.$http
           .post("/usuario/noseguir", {
-            nombre: "javierprueba",
-            nombreSeguir: "juanPrueba"
+            nombre: this.$session.get("name"),
+            nombreSeguir: this.$route.params.username
           })
           .then(response => {
             if (response.status === 200) {
@@ -210,8 +210,8 @@ export default {
       if (this.bloqueado === false) {
         this.$http
           .post("/usuario/bloquear", {
-            nombre: "javierprueba",
-            nombreBloquear: "juanPrueba"
+            nombre: this.$session.get("name"),
+            nombreBloquear: this.$route.params.username
           })
           .then(response => {
             if (response.status === 200) {
@@ -222,8 +222,8 @@ export default {
       } else {
         this.$http
           .post("/usuario/desbloquear", {
-            nombre: "javierprueba",
-            nombreBloquear: "juanPrueba"
+            nombre: this.$session.get("name"),
+            nombreBloquear: this.$route.params.username
           })
           .then(response => {
             if (response.status === 200) {

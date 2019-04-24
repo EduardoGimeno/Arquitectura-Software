@@ -14,18 +14,18 @@
           <strong>{{title}}</strong>
         </mdb-card-title>
         <mdb-card-text>{{description}}</mdb-card-text>
-        <form @submit.prevent="megusta">
-        <a class="icons-sm li-ic">
+
+        <a @click.prevent="megusta()" class="icons-sm li-ic">
           <mdb-icon icon="heart"/>
           {{likes}}
         </a>
-        </form>
-        <form @submit.prevent="nomegusta">
-        <a class="icons-sm tw-ic">
+
+
+        <a @click.prevent="nomegusta()" v-on="nomegusta" class="icons-sm tw-ic">
           <mdb-icon icon="heart-broken"/>
           {{dislikes}}
         </a>
-        </form>
+
         <mdb-btn tag="a" floating fab size="md" @click.native="modal = true">
           <mdb-icon icon="comments"/>
           {{comments}}
@@ -230,7 +230,7 @@ export default {
       this.$http
         //añadir campos a devolver
         .post("/post/borrarPost", {
-          id: this.id
+          id: this.id,
         })
         .then(response => {
           if (response.status === 200) {
@@ -241,11 +241,12 @@ export default {
     megusta() {
       this.$http
         //añadir campos a devolver
-        .post("/post/megusta", {
+        .post("/post/likePost", {
           id: this.id,
         })
         .then(response => {
           if (response.status === 200) {
+            this.likes=this.likes +1;
           }
         })
         .catch(() => this.loginFailed());
@@ -253,11 +254,12 @@ export default {
     nomegusta() {
       this.$http
         //añadir campos a devolver
-        .post("/post/nomegusta", {
+        .post("/post/dislikePost", {
           id: this.id,
         })
         .then(response => {
           if (response.status === 200) {
+            this.dislikes=this.dislikes +1;
           }
         })
         .catch(() => this.loginFailed());

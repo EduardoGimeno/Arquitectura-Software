@@ -42,11 +42,11 @@
         <div class="grey-text">
           <div class="center">
             <p class="h4 mt-5">Nueva contraseña</p>
-            <mdb-input v-model="oldPass" label="Old Password" icon="lock" type="password"/>
-            <mdb-input v-model="newPass" label="Password" icon="lock" type="password"/>
+            <mdb-input v-model="oldPass" label=" Contraseña antigua" icon="lock" type="password"/>
+            <mdb-input v-model="newPass" label="Nueva antigua" icon="lock" type="password"/>
             <mdb-input
               v-model="newPass2"
-              label="Confirmar password"
+              label="Confirmar contraseña"
               icon="lock"
               type="password"
             />
@@ -63,7 +63,7 @@
         <div class="grey-text">
           <div class="center">
             <p class="h4 mt-5">Eliminar cuenta</p>
-            <mdb-input v-model="oldPass" label="Password" icon="lock" type="password"/>
+            <mdb-input v-model="oldPass" label="Contraseña" icon="lock" type="password"/>
             <div class="alert alert-danger" v-if="error">{{ error }}</div>
           </div>
 
