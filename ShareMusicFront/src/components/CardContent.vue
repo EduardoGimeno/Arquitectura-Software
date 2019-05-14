@@ -26,13 +26,14 @@
           {{dislikes}}
         </a>
 
-        <mdb-btn tag="a" floating fab size="md" @click.native="modal = true">
+        <a @click.prevent="modal = true" class="icons-sm tw-ic">
           <mdb-icon icon="comments"/>
           {{comments}}
-        </mdb-btn>
-        <mdb-btn tag="a" floating fab size="md" @click.native="modalEdit = true">
+        </a>
+
+        <a @click.prevent="modalEdit = true" class="icons-sm tw-ic">
           <mdb-icon icon="edit"/>
-        </mdb-btn>
+        </a>
       </mdb-card-body>
     </mdb-card>
 
@@ -68,7 +69,7 @@
       </mdb-modal-body>
       <mdb-modal-footer>
         <mdb-btn outline="secondary">Enviar</mdb-btn>
-        <mdb-btn style="background-color: #563e91;" @click.native="modal = false">Close</mdb-btn>
+        <mdb-btn outline="secondary" @click.native="modal = false">Close</mdb-btn>
       </mdb-modal-footer>
     </mdb-modal>
 
@@ -102,7 +103,7 @@
           </form>
           <mdb-btn
             type="submit"
-            style="background-color: #563e91;"
+            outline="secondary"
             @click.native="modalEdit = false"
           >Publicar</mdb-btn>
         </mdb-modal-footer>
