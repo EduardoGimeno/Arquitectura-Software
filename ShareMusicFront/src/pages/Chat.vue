@@ -1,85 +1,134 @@
 <template>
-    <div class="chat container">
-        <h2 class="text-primary text-center">Real-Time Chat</h2>
-        <h5 class="text-secondary text-center">Powered by Vue.js and Firebase</h5>
-        <div class="card">
-            <div class="card-body">
-                <p class="nomessages text-secondary" v-if="messages.length == 0">
-                    [No messages yet!]
-                </p>
-                <div class="messages" v-chat-scroll="{always: false, smooth: true}">
-                    <div v-for="message in messages" :key="message.id">
-                        <span class="text-info">[{{ message.name }}]: </span>
-                        <span>{{message.message}}</span>
-                        <span class="text-secondary time">{{message.timestamp}}</span>
-                    </div>
-                </div>
+<div>
+      <NavBarUsuario/>
+      <div class="center ">
+        <mdb-row > 
+          <mdb-col md="5 ">
+            <div class="list">
+            <CardChat/>
             </div>
-            <div class="card-action">
-                <CreateMessage :name="name"/>
-            </div>
-        </div>
-    </div>
+          </mdb-col>
+    
+          <mdb-col md="7 ">
+             <div class="chat">
+               <CardConver/>
+              </div>
+          </mdb-col>
+
+        </mdb-row>
+      </div>
+</div>
 </template>
 
 <script>
-    import CreateMessage from '@/components/CreateMessage';
-    import fb from '@/fire';
-    import moment from 'moment';
-
-    export default {
-        name: 'Chat',
-        components: {
-            CreateMessage
-        },
-        data() {
-            return{
-                name: 'Javier',
-                messages: []
-            }
-        },
-        created() {
-            let ref = fb.collection('messages').orderBy('timestamp');
-
-            ref.onSnapshot(snapshot => {
-                snapshot.docChanges().forEach(change => {
-                    if (change.type == 'added') {
-                        let doc = change.doc;
-                        this.messages.push({
-                            id: doc.id,
-                            name: doc.data().name,
-                            message: doc.data().message,
-                            timestamp: moment(doc.data().timestamp).format('LTS')
-                        });
-                    }
-                });
-            });
-        }
+import { mdbContainer, mdbRow, mdbCol, ViewWrapper, mdbMask, mdbBtn, mdbIcon, mdbNavbar, mdbNavItem, mdbNavbarNav, mdbNavbarToggler, mdbNavbarBrand  } from 'mdbvue';
+import {  mdbCard, mdbCardImage, mdbCardHeader, mdbCardBody, mdbCardTitle, mdbCardText, mdbCardFooter, mdbCardUp, mdbCardAvatar, mdbCardGroup, mdbView, } from 'mdbvue';
+import CardChat from "@/components/CardChat";
+import CardConver from "@/components/CardConver";
+import NavBarUsuario from "@/components/NavBarUsuario";
+export default {
+  name: 'Perfil',
+  components: {
+    NavBarUsuario,
+    CardChat,
+    CardConver,
+    mdbContainer,
+    mdbRow,
+    mdbCol,
+    ViewWrapper,
+    mdbMask,
+    mdbBtn,
+    mdbIcon,
+    mdbNavbar,
+    mdbNavItem,
+    mdbNavbarNav,
+    mdbNavbarToggler,
+    mdbNavbarBrand,
+    mdbCard,
+    mdbCardImage,
+    mdbCardHeader,
+    mdbCardBody,
+    mdbCardTitle,
+    mdbCardText,
+    mdbCardFooter,
+    mdbCardUp,
+    mdbCardAvatar,
+    mdbCardGroup,
+    mdbView,
+  },
+  beforeCreate: function () {
+    if (!this.$session.exists()) {
+      this.$router.push('/')
     }
+  },
+  methods: {
+    logout: function () {
+      this.$session.destroy()
+      this.$router.push('/')
+    }
+  }
+};
 </script>
 
-<style>
-.chat h2{
-    font-size: 2.6em;
-    margin-bottom: 0px;
+<style scoped>
+
+.list{
+  position: relative;
+  bottom: 1;
+  left: 20%;
+  width: 70%;
+  height: 50%;
 }
 
-.chat h5{
-    margin-top: 0px;
-    margin-bottom: 40px;
+.chat{
+  position: relative;
+  bottom: 1;
+  left: 5%;
+  width: 90%;
 }
 
-.chat span{
-    font-size: 1.2em;
+.back{
+position: relative;
+  width: 100%;
+  height: 1000px;
+background-color: #ede7f6;
 }
 
-.chat .time{
-    display: block;
-    font-size: 0.7em;
+.perfil{
+  position: fixed;
+  top:15%;
+ right: 0;
+  bottom: 1;
+  left: 10%;
+  width: 25%;
+  height: 50%;
+
 }
 
-.messages{
-    max-height: 300px;
-    overflow: auto;
+.llenar{
+   width: 100%;
 }
+
+.bor{
+  border: 3px solid #73AD21;
+}
+
+.center {
+  position: absolute;
+  top: 15%;
+  left: 8%;
+  width: 80%;
+}
+.log{
+ position: relative;
+ margin: auto;
+  right: 0;
+  bottom: 1;
+  left: 0;
+  width: 95%;
+  height: 50%;
+
+}
+
+
 </style>
