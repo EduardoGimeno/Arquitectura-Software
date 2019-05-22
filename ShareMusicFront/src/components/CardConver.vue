@@ -17,7 +17,7 @@
                 ></li>
               </ul>
               <div class="card-action mb-3">
-                <CreateMessage :name="name"/>
+                <CreateMessage :name="name" :idConver="idConver"/>
             </div>
             </div>
           </mdb-col>
@@ -45,6 +45,7 @@ import {
 
 export default {
   name: "CardConver",
+  props: ["idConver"],
   components: {
     mdbCard,
     CardMessage,
@@ -60,12 +61,11 @@ export default {
   data() {
     return {
       name: this.$session.get("name"),
-      messages: []
+      messages: [],
     };
   },
   created() {
-    let ref = fb.collection("messages").orderBy("timestamp");
-
+    let ref = fb.collection("convers").doc(this.idConver).collection("messages");
     ref.onSnapshot(snapshot => {
       snapshot.docChanges().forEach(change => {
         if (change.type == "added") {

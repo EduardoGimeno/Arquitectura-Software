@@ -1,6 +1,12 @@
 <template>
   <mdb-card>
     <mdb-card-body>
+      <div align="right">
+        <a @click.prevent="abrirChat()" class="icons-sm li-ic">
+          <mdb-icon icon="comment-alt"/>
+        </a>
+      </div>
+
       <form>
         <div class="text-center">
           <img
@@ -17,10 +23,13 @@
         <form @submit.prevent="seguir">
           <div v-if="publico" class="text-center mb-5">
             <mdb-btn v-if="seguido" outline="secondary" type="submit">Dejar de seguir</mdb-btn>
+
             <mdb-btn v-else outline="secondary" type="submit">Seguir</mdb-btn>
             <form @submit.prevent="block">
-                <mdb-btn outline="secondary" v-if="bloqueado" type="submit"> Desbloquear</mdb-btn>
-                <mdb-btn outline="secondary" v-else type="submit"> <mdb-icon icon="ban"/></mdb-btn>
+              <mdb-btn outline="secondary" v-if="bloqueado" type="submit">Desbloquear</mdb-btn>
+              <mdb-btn outline="secondary" v-else type="submit">
+                <mdb-icon icon="ban"/>
+              </mdb-btn>
             </form>
           </div>
 
@@ -63,6 +72,7 @@
 </template>
 
 <script>
+import fb from "@/fire";
 import {
   mdbCard,
   mdbCardImage,
@@ -89,7 +99,7 @@ export default {
   },
   data() {
     return {
-      user: '',
+      user: "",
       imagen: "https://image.flaticon.com/icons/svg/149/149071.svg",
       nombre: "",
       biografia: "",
@@ -98,20 +108,21 @@ export default {
       bloqueados: "",
       publico: "",
       seguido: false,
-      bloqueado: false
+      bloqueado: false,
+      errorText: ""
     };
   },
 
   created: function() {
     //Se pide el número de seguidores
-    var user ='';
+    var user = "";
 
     this.$http
       .post("/usuario/perfil", { nombre: this.$route.params.username })
       .then(response => {
         if (response.status === 200) {
           this.user = response.data["nombre"];
-          user=response.data["nombre"];
+          user = response.data["nombre"];
           this.nombre = response.data["nombreReal"];
           this.biografia = response.data["biografia"];
         }
@@ -163,18 +174,16 @@ export default {
             }
 
             if (response.data["bloqueado"] === 1) {
-            this.bloqueado = true;
-          } else {
-            this.bloqueado = false;
-          }
-          
+              this.bloqueado = true;
+            } else {
+              this.bloqueado = false;
+            }
           }
         })
         .catch(() => this.failed());
     } else {
       this.publico = false;
     }
-    
   },
 
   methods: {
@@ -233,6 +242,22 @@ export default {
           .catch(() => this.loginFailed());
       }
     },
+    abrirChat() {
+      fb.collection("convers")
+        .add({
+          name: this.$session.get("name") + "-" + this.user,
+          user1: this.$session.get("name"),
+          user2: this.user,
+          timestamp: Date.now()
+        })
+        .catch(err => {
+          this.errorText = "Error";
+          console.log(err);
+        });
+      this.newMessage = null;
+      this.errorText = null;
+      this.$router.push("/Chat");
+    },
     loginFailed() {
       this.error = "Login failed!";
       delete localStorage.token;
@@ -240,3 +265,6 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+</style>

@@ -28,7 +28,7 @@ import {
 
 export default {
   name: "CreateMessage",
-  props: ["name"],
+  props: ["name", "idConver"],
   components: {
     mdbCard,
     mdbCardImage,
@@ -49,7 +49,8 @@ export default {
     createMessage() {
       if (this.newMessage) {
         this.errorText = "Enviando....";
-        fb.collection("messages")
+
+        fb.collection("convers").doc(this.idConver).collection("messages")
           .add({
             message: this.newMessage,
             name: this.name,
@@ -61,6 +62,7 @@ export default {
           });
         this.newMessage = null;
         this.errorText = null;
+
       } else {
         this.errorText = "A message must be entered!";
       }
