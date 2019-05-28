@@ -17,7 +17,8 @@ const add_post = function (req,res) {
     let data = [
         req.body.nombre,       
         req.body.cuerpo,
-        req.body.titulo
+        req.body.titulo,
+        req.body.img
     ];
     bd.post_add_post(data,res)
 }
@@ -31,6 +32,7 @@ const editar_post = function (req,res) {
     let data = [
         req.body.cuerpo,
         req.body.titulo,
+        req.body.img,
         req.body.id
     ];
     bd.post_editar_post(data,res)
