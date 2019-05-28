@@ -10,12 +10,12 @@
 
           </mdb-col>
     
-         <mdb-col md="3 ">
-            <ul classs= "" style="list-style-type:none;">
+         <mdb-col md="6 ">
+            <ul class= "ul2Col" style="list-style-type:none;">
               <li
+              class="liPad"
                 is="CardContent"
                 v-for="post in posts"
-                v-if="post.Id% 2 !== 0"
                 v-bind:key="post.Id"
                 v-bind:id="post.Id"
                 v-bind:imagen="'https://cdn.24.co.za/files/Cms/General/d/8224/e9c5b671161d4807aa61b5a305f4a3b7.png'"
@@ -29,26 +29,6 @@
             </ul>
           </mdb-col>
 
-
-          <mdb-col md="3 ">
-            <ul style="list-style-type:none;">
-              <li
-                is="CardContent"
-                v-for="post in posts"
-                v-if="post.Id% 2 === 0"
-                v-bind:key="post.Id"
-                v-bind:id="post.Id"
-                v-bind:imagen="'https://cdn.24.co.za/files/Cms/General/d/8224/e9c5b671161d4807aa61b5a305f4a3b7.png'"
-                v-bind:user="post.NomUsuario"
-                v-bind:title="post.Titulo"
-                v-bind:description="post.Texto"
-                v-bind:likes="post.Likes"
-                v-bind:dislikes="post.Dislikes"
-                v-bind:comments="post.comments"
-              ></li>
-
-            </ul>
-          </mdb-col>
         </mdb-row>
       </div>
 </div>
@@ -167,6 +147,19 @@ background-color: #ede7f6;
   top:12%;
   padding: 10px;
   
+}
+
+.ul2Col {
+  -moz-column-count: 2;
+    -moz-column-gap: 20px;
+    -webkit-column-count: 2;
+    -webkit-column-gap: 50px;
+    column-count: 2;
+    column-gap: 50px;
+}
+
+.liPad {
+  padding: 10px 0px;
 }
 
 

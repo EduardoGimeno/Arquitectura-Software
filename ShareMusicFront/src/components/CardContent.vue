@@ -1,5 +1,5 @@
 <template>
-  <mdb-row class="mb-3 log">
+  <mdb-row class=" log">
     <mdb-card>
       <mdb-view hover cascade>
         <mdb-card-image v-bind:src="imagen" alt="Card image cap"></mdb-card-image>

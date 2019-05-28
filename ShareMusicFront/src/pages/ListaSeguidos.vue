@@ -3,22 +3,14 @@
       <NavBarUsuario/>
       <div class="center">
         <mdb-row > 
-          <mdb-col  md="4">
-            <ul style="list-style-type:none;">
+          <mdb-col  md="12">
+            <ul class="ul2Col" style="list-style-type:none;">
               <li
                 is="CardUsuario"
                 v-for="user in users"
                 v-bind:key="user.UsuarioSeguido"
                 v-bind:user="user.UsuarioSeguido"
               ></li>
-            </ul>
-          </mdb-col>
-          <mdb-col md="4 ">
-             <ul style="list-style-type:none;">
-            </ul>
-          </mdb-col>
-          <mdb-col md="4 ">
-             <ul style="list-style-type:none;">
             </ul>
           </mdb-col>
         </mdb-row>
@@ -108,6 +100,19 @@ export default {
   top:12%;
   left: 13%;
   padding: 10px;
+}
+
+.ul2Col {
+-webkit-column-count: 2;
+-moz-column-count: 2;
+column-count: 2;
+-webkit-column-gap: 40px;
+column-gap: 40px;
+-moz-column-gap: 40px;
+}
+
+.liPad {
+  padding: 30px 0px;
 }
 
 

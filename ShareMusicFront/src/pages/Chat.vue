@@ -124,7 +124,7 @@ export default {
         this.hayConver=true;
         if (change.type == "added") {
           let doc = change.doc;
-          if (doc.data().user1 == this.$session.get("name") || doc.data().user1 == this.$session.get("name")) {
+          if (doc.data().user1 == this.$session.get("name") || doc.data().user2 == this.$session.get("name")) {
             this.convers.push({
               id: doc.id,
               name: doc.data().name

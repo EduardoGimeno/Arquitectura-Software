@@ -4,7 +4,7 @@
    <form  @submit.prevent="login">
       <p class="h3 text-center py-2">Log in</p>
       <div class="grey-text ">
-        <mdb-input v-model="email" label="Your email" icon="envelope" type="email"/>
+        <mdb-input v-model="email" label="Your email" icon="envelope" type="text"/>
         <mdb-input v-model="password" label="Your password" icon="lock" type="password"/>
            </div>
         <div class="text-center py-3">

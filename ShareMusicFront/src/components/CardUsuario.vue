@@ -1,6 +1,6 @@
 <template>
   <router-link :to="{ name: 'Perfil', params: { username: user}}">
-    <mdb-card class="mb-3">
+    <mdb-card >
       <mdb-card-body>
         <form>
           <div class="text-center">
