@@ -254,7 +254,7 @@ const post_get_propios_posts = function (data,res) {
   })
 };
 const post_add_post = function (data,res) {
-  let sql = 'INSERT INTO post (NomUsuario, Texto, Likes, Dislikes, Titulo) VALUES(?, ?, 0, 0, ?);'
+  let sql = 'INSERT INTO post (NomUsuario, Texto, Likes, Dislikes, Titulo, Imagen) VALUES(?, ?, 0, 0, ?,?);'
   pool.query(sql, data, function (err, result) {
     if (err) throw err
     else {
@@ -263,7 +263,7 @@ const post_add_post = function (data,res) {
   })
 };
 const post_editar_post = function (data,res) {
-  let sql = 'UPDATE post SET Texto=? ,Titulo=? WHERE Id=?'
+  let sql = 'UPDATE post SET Texto=? ,Titulo=?, Imagen=? WHERE Id=?'
   pool.query(sql, data, function (err, result) {
     if (err) throw err
     else {
