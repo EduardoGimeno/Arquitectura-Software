@@ -2,7 +2,11 @@
   <div>
     <NavBarUsuario/>
     <div class="center">
-      <mdb-row>
+      <div v-if="!hayConver">
+        <p class="h2 text-center pt-3">No hay conversaciones todavía :(</p>
+        <p class="h5 text-center pt-3">Busca un usuario y chatea con él!</p>
+      </div>
+      <mdb-row v-else>
         <mdb-col md="5 ">
           <div class="list">
             <mdb-card>
@@ -10,21 +14,20 @@
                 <form>
                   <mdb-row>
                     <mdb-col md="6" xl="12" class="px-3">
-                      <div class="white z-depth-1 px-3 pt-3 pb-0" v-if="hayConver">
+                      <div class="white z-depth-1 px-3 pt-3 pb-0">
                         <ul class="list-unstyled friend-list">
-                          <li  v-for="conver in convers" :key="conver.id">
-                            <a @click.prevent="converSelect(conver.id)" v-on="converSelect" class="d-flex justify-content-between">
+                          <li v-for="conver in convers" :key="conver.id">
+                            <a
+                              @click.prevent="converSelect(conver.id)"
+                              v-on="converSelect"
+                              class="d-flex justify-content-between"
+                            >
                               <div class="text-small">
                                 <strong>{{conver.name}}</strong>
                                 <p class="last-message text-muted">Ultimo mensaje...</p>
                               </div>
                             </a>
                           </li>
-                        </ul>
-                      </div>
-                      <div class="white z-depth-1 px-3 pt-3 pb-0" v-else>
-                        <ul class="list-unstyled friend-list">
-                          No hay conversaciones
                         </ul>
                       </div>
                     </mdb-col>
@@ -112,19 +115,21 @@ export default {
       convers: [],
       hayConver: false,
       createdConv: false,
-      componentKey: 0,
+      componentKey: 0
     };
   },
   created() {
     let ref = fb.collection("convers").orderBy("timestamp");
-    
-    ref.onSnapshot(snapshot => {
 
+    ref.onSnapshot(snapshot => {
       snapshot.docChanges().forEach(change => {
-        this.hayConver=true;
         if (change.type == "added") {
           let doc = change.doc;
-          if (doc.data().user1 == this.$session.get("name") || doc.data().user2 == this.$session.get("name")) {
+          if (
+            doc.data().user1 == this.$session.get("name") ||
+            doc.data().user2 == this.$session.get("name")
+          ) {
+            this.hayConver = true;
             this.convers.push({
               id: doc.id,
               name: doc.data().name
@@ -135,22 +140,16 @@ export default {
     });
   },
   beforeCreate: function() {
-    this.probando="hola";
     if (!this.$session.exists()) {
       this.$router.push("/");
     }
   },
   methods: {
     converSelect(id) {
-      this.actualConver=id;
-      this.componentKey=id;
-      this.createdConv=true;
+      this.actualConver = id;
+      this.componentKey = id;
+      this.createdConv = true;
     },
-
-    logout: function() {
-      this.$session.destroy();
-      this.$router.push("/");
-    }
   }
 };
 </script>

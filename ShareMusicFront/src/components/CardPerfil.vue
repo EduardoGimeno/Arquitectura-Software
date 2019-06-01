@@ -1,7 +1,7 @@
 <template>
   <mdb-card>
     <mdb-card-body>
-      <div align="right">
+      <div v-if="publico" align="right">
         <a @click.prevent="abrirChat()" class="icons-sm li-ic">
           <mdb-icon icon="comment-alt"/>
         </a>
@@ -41,7 +41,7 @@
         </form>
 
         <div class="grey-text">
-          <p class="h5 mt-4">@{{$route.params.username}}</p>
+          <p class="h5 mt-4">@{{user}}</p>
           <p class="h6 py-2">{{biografia}}</p>
           <router-link
             :to="{ name: 'ListaSeguidores', params: { username: $route.params.username}}"
@@ -57,7 +57,7 @@
               <a>seguidos</a>
             </p>
           </router-link>
-          <router-link
+          <router-link v-if="!publico"
             :to="{ name: 'ListaBloqueados', params: { username: $route.params.username}}"
           >
             <p class="h7">
@@ -112,17 +112,19 @@ export default {
       errorText: ""
     };
   },
+  beforeCreate: function() {
+    if (!this.$session.exists()) {
+      this.$router.push("/");
+    }
+  },
 
   created: function() {
-    //Se pide el número de seguidores
-    var user = "";
 
     this.$http
       .post("/usuario/perfil", { nombre: this.$route.params.username })
       .then(response => {
         if (response.status === 200) {
-          this.user = response.data["nombre"];
-          user = response.data["nombre"];
+          this.user = response.data["nombre"];;
           this.nombre = response.data["nombreReal"];
           this.biografia = response.data["biografia"];
         }

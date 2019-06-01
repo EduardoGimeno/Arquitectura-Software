@@ -68,23 +68,6 @@ export default {
       users: ''
     }
   },
-  /*
-  created: function () {
-    this.$http.post('/usuario/listSeguidores', { nombre: this.$route.params.username})
-        .then(response => {
-          if (response.status === 200) {
-
-          }
-        })
-        .catch(() => this.failed())
-  
-  },*/
-  methods: {
-    logout: function () {
-      this.$session.destroy()
-      this.$router.push('/')
-    }
-  }
 };
 </script>
 
@@ -104,16 +87,19 @@ export default {
 }
 
 .ul2Col {
--webkit-column-count: 2;
--moz-column-count: 2;
-column-count: 2;
--webkit-column-gap: 40px;
-column-gap: 40px;
--moz-column-gap: 40px;
+-webkit-column-count: 3;
+-moz-column-count: 3;
+column-count: 3;
+-webkit-column-gap: 70px;
+column-gap: 70px;
+-moz-column-gap: 70px;
+
+
 }
 
 .liPad {
-  padding: 0px 0px;
+  display: inline-block;
+    width:250px;
 }
 
 

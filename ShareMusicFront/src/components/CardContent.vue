@@ -26,52 +26,11 @@
           {{dislikes}}
         </a>
 
-        <a @click.prevent="modal = true" class="icons-sm tw-ic">
-          <mdb-icon icon="comments"/>
-          {{comments}}
-        </a>
-
-        <a @click.prevent="modalEdit = true" class="icons-sm tw-ic">
+        <a v-if="autor" @click.prevent="modalEdit = true" class="icons-sm tw-ic">
           <mdb-icon icon="edit"/>
         </a>
       </mdb-card-body>
     </mdb-card>
-
-    <mdb-modal v-if="modal" @close="modal = false">
-      <mdb-modal-header>
-        <mdb-modal-title>
-          <h4>Respuestas a {{user}}</h4>
-        </mdb-modal-title>
-      </mdb-modal-header>
-      <mdb-modal-body>
-        <mdb-row>
-          <!-- Grid column -->
-          <mdb-col md="6" xl="8" class="pl-md-3 px-lg-auto px-0">
-            <div class="chat-message">
-              <ul class="list-unstyled chat">
-                <li
-                  is="CardMensaje"
-                  v-for="(comentario) in comentarios"
-                  v-bind:key="comentario.id"
-                  v-bind:user="comentario.user"
-                  v-bind:fecha="comentario.fecha"
-                  v-bind:imagen="comentario.imagen"
-                  v-bind:mensaje="comentario.mensaje"
-                ></li>
-              </ul>
-            </div>
-          </mdb-col>
-        </mdb-row>
-        <hr class="w-100">
-        <div class="white pl-md-2">
-          <mdb-textarea label="Comentario" @input="handleInput" :rows="3"/>
-        </div>
-      </mdb-modal-body>
-      <mdb-modal-footer>
-        <mdb-btn outline="secondary">Enviar</mdb-btn>
-        <mdb-btn outline="secondary" @click.native="modal = false">Close</mdb-btn>
-      </mdb-modal-footer>
-    </mdb-modal>
 
     <mdb-modal v-if="modalEdit" @close="modalEdit = false">
       <form @submit.prevent="publicar">
@@ -82,19 +41,10 @@
         </mdb-modal-header>
         <mdb-modal-body>
           <div class="grey-text">
-            <mdb-input v-model="title" label="Título" type="text"/>
+            <mdb-input v-model="title" label="Título" type="text" required/>
             <div class="input-group"></div>
-            <mdb-textarea v-model="description" label="Contenido" @input="handleInput" :rows="3"/>
-            <div class="custom-file">
-              <input
-                type="file"
-                class="custom-file-input"
-                id="inputGroupFile01"
-                aria-describedby="inputGroupFileAddon01"
-              >
-              <label class="custom-file-label" for="inputGroupFile01">Archivo</label>
-            </div>
-            <mdb-file-input btnColor="primary"/>
+            <mdb-textarea v-model="description" label="Contenido" @input="handleInput" :rows="3" required/>
+            <mdb-input v-model="imagen" label="Imagen" type="text" required/>
           </div>
         </mdb-modal-body>
         <mdb-modal-footer>
@@ -198,19 +148,18 @@ export default {
   },
   data() {
     return {
-      modal: false,
       modalEdit: false,
-      comentarios: [
-        {
-          id: 1,
-          user: "Alex Steward",
-          fecha: "12 mins ago",
-          imagen: "https://image.flaticon.com/icons/svg/149/149071.svg",
-          mensaje:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-        }
-      ]
+      autor: false,
     };
+  },
+  beforeCreate: function() {
+    if (!this.$session.exists()) {
+      this.$router.push("/");
+    }
+  },
+  
+  mounted: function () {
+    this.autor= this.$session.get("name") == this.user;
   },
   methods: {
     publicar() {
@@ -219,10 +168,12 @@ export default {
         .post("/post/editarPost", {
           id: this.id,
           titulo: this.title,
-          cuerpo: this.description
+          cuerpo: this.description,
+          img: this.imagen
         })
         .then(response => {
           if (response.status === 200) {
+            window.location.reload();
           }
         })
         .catch(() => this.loginFailed());
@@ -235,6 +186,7 @@ export default {
         })
         .then(response => {
           if (response.status === 200) {
+            window.location.reload();
           }
         })
         .catch(() => this.loginFailed());

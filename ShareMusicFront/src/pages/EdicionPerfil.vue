@@ -113,12 +113,6 @@ export default {
       this.$router.push('/')
     }
   },
-  methods: {
-    logout: function () {
-      this.$session.destroy()
-      this.$router.push('/')
-    }
-  }
   
 };
 </script>

@@ -4,13 +4,13 @@
    <form  @submit.prevent="login">
       <p class="h3 text-center py-2">Log in</p>
       <div class="grey-text ">
-        <mdb-input v-model="email" label="Your email" icon="envelope" type="text"/>
-        <mdb-input v-model="password" label="Your password" icon="lock" type="password"/>
+        <mdb-input v-model="email" label="Your email" icon="envelope" type="text" required/>
+        <mdb-input v-model="password" label="Your password" icon="lock" type="password" required/>
            </div>
         <div class="text-center py-3">
           <mdb-btn color="grey" type="submit">Log in</mdb-btn>
-          <div class="alert alert-danger" v-if="error">{{ error }}</div>
         </div>
+        <div class="alert alert-danger" v-if="error">{{ error }}</div>
 
         <p class="font-small grey-text d-flex justify-content-center">Don't have an account? <router-link to="/Sign"><a class="dark-grey-text font-weight-bold ml-1"> Sign up</a></router-link></p>
         <p class="font-small grey-text d-flex justify-content-center">Forgot <router-link to="/Sign"><a class="dark-grey-text font-weight-bold ml-1"> Password?</a></router-link></p>

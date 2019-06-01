@@ -181,7 +181,7 @@ const usuario_listSeguidos = function (data, res) {
   })
 };
 const usuario_editarperfil = function (data, res) {
-  let sql = 'update usuario SET Biografia=? WHERE Nombre=?'
+  let sql = 'update usuario SET NombreReal=?, Email=?, Biografia=? WHERE Nombre=?'
   pool.query(sql, data, function (err, result) {
     if (err) throw err
     else {
@@ -246,7 +246,6 @@ const post_get_todos_posts = function (data, res) {
     if (err) throw err
     else {
       res.status(200).send(result)
-      console.log(result)
     }
   })
 };

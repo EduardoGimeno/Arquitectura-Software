@@ -96,6 +96,8 @@ const listSeguidos = function (req,res) {
 }
 const editarperfil = function (req,res) {
     let data = [
+        req.body.nombreReal,
+        req.body.email,
         req.body.biografia,
         req.body.nombre
     ];

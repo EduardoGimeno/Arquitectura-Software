@@ -117,10 +117,10 @@ export default {
   },
   data() {
     return {
-      email: this.$session.get("email"),
+      email: "",
       imagen: "https://image.flaticon.com/icons/svg/149/149071.svg",
-      name: this.$session.get("realname"),
-      user: this.$session.get("name"),
+      name: "",
+      user: "",
       biografia: "",
       oldPass: "",
       newPass:"",
@@ -129,11 +129,13 @@ export default {
   },
 
   created: function() {
-    //cambiar por petición de todo el perfil
     this.$http
-      .post("/usuario/biografia", { nombre: this.user })
+      .post("/usuario/perfil", { nombre: this.$session.get("name") })
       .then(response => {
         if (response.status === 200) {
+          this.user = response.data["nombre"];
+          this.email = response.data["email"];
+          this.name = response.data["nombreReal"];
           this.biografia = response.data["biografia"];
         }
       })
@@ -144,11 +146,14 @@ export default {
       this.$http
         //añadir campos a devolver
         .post("/usuario/editarperfil", {
+          nombreReal: this.name,
+          email: this.email,
           biografia: this.biografia,
           nombre: this.user
         })
         .then(response => {
           if (response.status === 200) {
+            window.location.reload();
           }
         })
         .catch(() => this.loginFailed());
@@ -178,6 +183,8 @@ export default {
         })
         .then(response => {
           if (response.status === 200) {
+            this.$session.destroy();
+            this.$router.push("/");
           }
         })
         .catch(() => this.loginFailed());

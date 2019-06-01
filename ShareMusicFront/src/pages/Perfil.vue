@@ -1,7 +1,7 @@
 <template>
   <div>
     <NavBarUsuario/>
-    <div class="center">
+    <div class="center" v-if="!ocultar">
       <mdb-row class="col">
         <mdb-col md="5">
           <div class="perfil">
@@ -17,7 +17,7 @@
               v-for="post in posts"
               v-bind:key="post.Id"
               v-bind:id="post.Id"
-              v-bind:imagen="'https://cdn.24.co.za/files/Cms/General/d/8224/e9c5b671161d4807aa61b5a305f4a3b7.png'"
+              v-bind:imagen="post.Imagen"
               v-bind:user="post.NomUsuario"
               v-bind:title="post.Titulo"
               v-bind:description="post.Texto"
@@ -28,6 +28,9 @@
           </ul>
         </mdb-col>
       </mdb-row>
+    </div>
+    <div class="center" v-else>
+      <p class="h2 text-center pt-3">No puede acceder a este perfil :(</p>
     </div>
   </div>
 </template>
@@ -106,28 +109,46 @@ export default {
   },
 
   beforeCreate: function() {
-    this.$http
-      .post("/post/listarPostsUsuario", {
-        nombre: this.$route.params.username
-      })
+    if (!this.$session.exists()) {
+      this.$router.push("/");
+    } else {
+      if (this.$route.params.username !== this.$session.get("name")) {
+        this.$http
+          .post("/usuario/esSeguidor", {
+            usuario: this.$route.params.username,
+            usuarioSeguido: this.$session.get("name")
+          })
+          .then(response => {
+            if (response.status === 200) {
+              if (response.data["bloqueado"] === 1) {
+                this.ocultar = true;
+              } else {
+                this.ocultar = false;
+              }
+            }
+          })
+          .catch(() => this.failed());
+      }
+      if (!this.ocultar) {
+        this.$http
+          .post("/post/listarPostsUsuario", {
+            nombre: this.$route.params.username
+          })
 
-      .then(response => {
-        if (response.status === 200) {
-          this.posts = response.data;
-        }
-      })
-      .catch(() => this.failed());
+          .then(response => {
+            if (response.status === 200) {
+              this.posts = response.data;
+            }
+          })
+          .catch(() => this.failed());
+      }
+    }
   },
   data() {
     return {
-      posts: ""
+      posts: "",
+      ocultar: false
     };
-  },
-  methods: {
-    logout: function() {
-      this.$session.destroy();
-      this.$router.push("/");
-    }
   }
 };
 </script>
@@ -182,6 +203,8 @@ export default {
 }
 
 .liPad {
+  display: inline-block;
+  width: 250px;
   padding: 10px 0px;
 }
 </style>

@@ -7,11 +7,6 @@
       <mdb-navbar-toggler style="max-width: 1140px">
         <mdb-navbar-nav left>
         </mdb-navbar-nav>
-         <mdb-navbar-nav right>
-
-          <mdb-nav-item href="#" waves-fixed>Contacto</mdb-nav-item>
-
-        </mdb-navbar-nav>
       </mdb-navbar-toggler>
     </mdb-container>
   </mdb-navbar>
